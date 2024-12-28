@@ -3,7 +3,7 @@
     "C_Cpp.intelliSenseEngineFallbsack": "Disabled",
     "C_Cpp.intelliSenseCacheSize": 0,
     "C_Cpp.errorSquiggles": "enabled",
-    "C_Cpp.default.compilerPath": "C:\\mingw64\\bin\\g++.exe",
+    "C_Cpp.default.compilerPath": "d:\\mingw64\\bin\\g++.exe",
     "files.associations": {
         "*.cpp": "cpp",
         "stdbool.h": "c",

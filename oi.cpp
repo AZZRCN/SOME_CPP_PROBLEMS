@@ -1,3 +1,36 @@
+/**
+ * First of all:
+ * 第一点：
+ * All the Functions are directly copied,but I can sure that it is able to run.
+ * 所有函数都是直接复制的，但我确定它们能直接使用
+ * If can't,then check the includes is or not full.
+ * 如果不能，看看库有没有导入全
+ * Second:
+ * 第二点：
+ * This is a file with ... A LOT things
+ * 这是一个有一坨东西的oi.cpp
+ * The prupose is give tools and examples
+ * 意在提供工具和例子
+ * And be used widely
+ * 然后被广泛使用
+ * 
+ * 你最好不要把这些文件，因为定义了许多不必要的东西
+ * 这个文件旨在给大家提供思路（主要）
+ * 如果你直接复制的函数有问题（一些变量没有定义）
+ * 你有自信的话可以直接手写，因为一般都是默认的空的变量
+ * 比如: vector<int> v;
+ * 
+ * 如果你有意向（意见等）
+ * 包括但不限于：提交一些你想要的函数，让我重新构建一下namespace，或者你来提供现成的namespace列表
+ * 请在Issue里提交?
+ * 
+ * How to Find me:
+ * Bilibili 夕阳下的中学生
+ * Github   AZZRCN
+ * 当成宣传了，希望有人看
+ * 
+ * 天下大同
+*/
 #include <random>
 #include <iostream>
 #include <list>
@@ -40,6 +73,7 @@ namespace oi{
 for(type::iterator it_name = dist_name.begin();it_name != dist_name.end(); it_name++)
 #define use(x) const x&
 #define error(_Cond) assert(!(_Cond));
+#define fast __forceinline __fastcall
 #define lam(name,catch_args,args,return_type,do_what) auto name = catch_args args->return_type do_what;//{return return_what;};
 #define force_con(type,x) *(type*)&x
 // #ifndef fast_io
@@ -183,6 +217,27 @@ for(int i = 1; i <= times; i++){\
         }
     }
     namespace data{
+        // template<typename _Count>
+        // vector<pair<_Count,size_t>> count_unorder(vector<_Count> v){
+        //     unordered_map<_Count,size_t> c;
+        //     vector<pair<_Count,size_t>> ret;
+        //     for(_Count&i:v){
+        //         if(c.find(i)!=c.end()){c.find(i)->second++;}
+        //         else{c.insert(make_pair(i,1));}
+        //     }
+        //     for(pair<_Count,size_t> i:c){ret.push_back(i);}
+        //     return ret;
+        // }
+        template<typename _Count>
+        inline vector<pair<_Count,size_t>> count_unorder(vector<_Count> v,vector<pair<_Count,size_t>>&ret){
+            unordered_map<_Count,size_t> c;
+            for(_Count&i:v){
+                if(c.find(i)!=c.end()){c.find(i)->second++;}
+                else{c.insert(make_pair(i,1));}
+            }
+            for(pair<_Count,size_t> i:c){ret.push_back(i);}
+            return ret;
+        }
         void fill_rand(list<int>& Dist,int Size_){
             srand(time(0)|19491001);
             Dist.clear();
@@ -190,66 +245,156 @@ for(int i = 1; i <= times; i++){\
                 Dist.push_back(rand());
             }
         }
-    }
-    namespace sort_{
-        list<int> tmp[10];
-        inline void shuffle(const int& Mod_ten,list<int>& data){
-            while(!data.empty()){
-                tmp[(data.front()/Mod_ten)%10].push_back(data.front());
-                data.pop_front();
-            }
-        }
-        inline void collect(list<int>& data){
-            for(int i = 0; i < 10; i++){
-                cat_list(data,data.end(),tmp[i]);
-            }
-        }
-        void auto_lsd(list<int>& l){
-            int maxn = 0;
-            for(int i : l){
-                maxn = max(maxn,dec_len(i));
-            }
-            int mod = 1;
-            for(int i = 1; i <= maxn; i++){
-                mod *= 10;
-                shuffle(mod,l);
-                collect(l);
-            }
-        }
-        //重要:times指的是最后times+1位保持有序
-        //例如lsd(...,1):
-        //1,3,73,889,951->
-        //1,3,951,73,889
-        //而不是
-        //1,951,3,73,889
-        void lsd(list<int>& l,int times){
-            int mod = 1;
-            for(int i = 1; i <= times; i++){
-                mod*=10;
-                shuffle(mod,l);
-                collect(l);
-            }
-        }
-        vector<int> findMostElement(vector<int>& n){
-            unordered_map<int,int> um;
-            for(int i:n){
-                if(um.find(i) == um.end()){um.insert(make_pair(i,1));}
-                else{um[i]++;}
-            }
-            vector<int> ret;
-            int max = -1;
-            for(pair<int,int> i : um){
-                if(i.second<max){continue;}
-                if(i.second>max){
-                    ret.clear();
-                    max = i.second;
+        namespace sort_{
+            list<int> tmp[10];
+            inline void shuffle(const int& Mod_ten,list<int>& data){
+                while(!data.empty()){
+                    tmp[(data.front()/Mod_ten)%10].push_back(data.front());
+                    data.pop_front();
                 }
-                ret.push_back(i.first);
             }
-            return ret;
+            inline void collect(list<int>& data){
+                for(int i = 0; i < 10; i++){
+                    cat_list(data,data.end(),tmp[i]);
+                }
+            }
+            void auto_lsd(list<int>& l){
+                int maxn = 0;
+                for(int i : l){
+                    maxn = max(maxn,dec_len(i));
+                }
+                int mod = 1;
+                for(int i = 1; i <= maxn; i++){
+                    mod *= 10;
+                    shuffle(mod,l);
+                    collect(l);
+                }
+            }
+            //重要:times指的是最后times+1位保持有序
+            //例如lsd(...,1):
+            //1,3,73,889,951->
+            //1,3,951,73,889
+            //而不是
+            //1,951,3,73,889
+            void lsd(list<int>& l,int times){
+                int mod = 1;
+                for(int i = 1; i <= times; i++){
+                    mod*=10;
+                    shuffle(mod,l);
+                    collect(l);
+                }
+            }
+            vector<int> findMostElement(vector<int>& n){
+                unordered_map<int,int> um;
+                for(int i:n){
+                    if(um.find(i) == um.end()){um.insert(make_pair(i,1));}
+                    else{um[i]++;}
+                }
+                vector<int> ret;
+                int max = -1;
+                for(pair<int,int> i : um){
+                    if(i.second<max){continue;}
+                    if(i.second>max){
+                        ret.clear();
+                        max = i.second;
+                    }
+                    ret.push_back(i.first);
+                }
+                return ret;
+            }
         }
     }
     namespace tools{
+        // using _Ty = int;
+        template<typename _Ty>
+        class counter{
+            public:
+            unordered_map<_Ty,size_t> um;
+            __forceinline __fastcall void operator+(const _Ty x){add(x);}
+            __forceinline __fastcall void operator-(const _Ty x){del(x);}
+            __forceinline void clear() const {um.clear();}
+            __forceinline bool empty() const {return um.empty();}
+            void merge(const counter<_Ty>&c){for(pair<_Ty,size_t>&i:c.um){add(i.first,i.second);}}
+            bool contains(const _Ty x){return um.find(x) != um.end();}
+            __forceinline __fastcall const void add(const _Ty x){
+                typename unordered_map<_Ty,size_t>::iterator it = um.find(x);
+                if(it != um.end()){it->second++;}
+                else{um.insert(make_pair<const _Ty&,size_t>(x,1));}
+            }
+            __forceinline __fastcall const void add(const _Ty x,size_t times){
+                typename unordered_map<_Ty,size_t>::iterator it = um.find(x);
+                if(it != um.end()){it->second += times;}
+                else{um.insert(make_pair<const _Ty&,size_t>(x,times));}
+            }
+            __forceinline __fastcall const void del(const _Ty x){
+                typename unordered_map<_Ty,size_t>::iterator it = um.find(x);
+                if(it != um.end()){
+                    if(it->second > 0){it->second--;}
+                    else{um.erase(it);}
+                }
+            }
+            __forceinline __fastcall const void del(const _Ty x,size_t times){
+                typename unordered_map<_Ty,size_t>::iterator it = um.find(x);
+                if(it != um.end()){
+                    if(it->second > times){it->second -= times;}
+                    else{um.erase(it);}
+                }
+            }
+            //count a element
+            __forceinline size_t count(const _Ty&x){
+                typename unordered_map<_Ty,size_t>::iterator it = um.find(x);
+                return ((it != um.end()) ? (it->second) : (0));
+            }
+            //count the elements
+            __forceinline __fastcall size_t size() const {return um.size();}
+            //the number of all elements
+            __forceinline size_t total() const {
+                size_t ret = 0;
+                for(const pair<_Ty,size_t>&i:um){ret += i.second;}
+                return ret;
+            }
+            _Ty most() {
+                _Ty maxn;
+                size_t max_;
+                for(pair<_Ty,size_t> i:um){
+                    if(i.second>max_){
+                        max_ = i.second;
+                        maxn = i.first;
+                    }
+                }
+                return maxn;
+            }
+            vector<_Ty> most_repeat() {
+                vector<_Ty> maxn;
+                size_t max_;
+                for(pair<_Ty,size_t>&i:um){
+                    if(i.second>max_){
+                        maxn.clear();
+                        maxn.push_back(i.first);
+                        max_ = i.second;
+                        continue;
+                    }
+                    if(i.second == max_){maxn.push_back(i.first);}
+                }
+                return maxn;
+            }
+            vector<_Ty> all_key() {
+                vector<_Ty> v;
+                for(pair<const _Ty,size_t>&i:um){v.push_back(i.first);}
+                return v;
+            }
+            void print(){
+                for(pair<_Ty,size_t> i:um){
+                    cout << i.first << " " << i.second << endl;
+                }
+            }
+            friend std::ostream& operator<<(std::ostream& os, const counter& c) {
+                for(const auto& pair : c.um) {
+                    os << pair.first << " " << pair.second << std::endl;
+                }
+                return os;
+            }
+        };
         struct log_outer{
             public:
             FILE* f;
@@ -351,6 +496,54 @@ for(int i = 1; i <= times; i++){\
             }
             return true;
         }
+        // bool memequal(void* A,void* B,size_t size){
+        //     unsigned char *_A = (unsigned char*)A,*_B = (unsigned char*)B;
+        //     while(size--){
+        //         if(*(_A++)!=*(_B++)){
+        //             return false;
+        //         }
+        //     }
+        //     return true;
+        // }
+        // template<typename t = void>
+        // void memout(t* A,size_t size){
+        //     unsigned char *_A = (unsigned char*)A;
+        //     size_t it = 0;
+        //     while(it != size){
+        //         printf("%02hx ",*(_A++));
+        //         it++;
+        //         if(it%8==0){
+        //             putchar(' ');
+        //         }
+        //     }
+        //     putchar('\n');
+        // }
+        // template<typename t>
+        // void memout(t& A){
+        //     unsigned char *_A = (unsigned char*)&A;
+        //     size_t it = 0;
+        //     while(it != sizeof(t)){
+        //         printf("%02hx ",*(_A++));
+        //         it++;
+        //         if(it%8==0){
+        //             putchar(' ');
+        //         }
+        //     }
+        //     putchar('\n');
+        // }
+        // template<typename t>
+        // void memout_rev(t& A){
+        //     const unsigned char *_A = (unsigned char*)&A;
+        //     signed int it = sizeof(t)-1;
+        //     while(it>=0){
+        //         printf("%02hx ",*(_A+it));
+        //         it--;
+        //         if(it%8==7){
+        //             putchar(' ');
+        //         }
+        //     }
+        //     putchar('\n');
+        // }
         //check whether the _catch_ each one bit is also one is _Host_
         inline bool bites_belong(use(int) _Host_,use(int) _catch_){
             return ((_Host_&_catch_)==_catch_);
@@ -521,88 +714,88 @@ for(int i = 1; i <= times; i++){\
             }return ans;
         }
     }
-    namespace roma{
-        string intToRoman(int num) {
-            int values[] = { 1000,900,500,400,100,90,50,40,10,9,5,4,1 };
-            string reps[] = { "M","CM","D","CD","C","XC","L","XL","X","IX","V","IV","I" };
-            string res;
-            for (int i = 0; i < 13; i++) {
-                while (num >= values[i]) {
-                    num -= values[i];
-                    res += reps[i];
+    namespace math{
+        namespace roma{
+            string intToRoman(int num) {
+                int values[] = { 1000,900,500,400,100,90,50,40,10,9,5,4,1 };
+                string reps[] = { "M","CM","D","CD","C","XC","L","XL","X","IX","V","IV","I" };
+                string res;
+                for (int i = 0; i < 13; i++) {
+                    while (num >= values[i]) {
+                        num -= values[i];
+                        res += reps[i];
+                    }
+                }
+                return res;
+            }
+            // 查找数值对应的罗马字符
+            inline const char* convertor(int num) {
+                switch (num) {
+                case 0: fail:return ""; // 0为特殊情况，需注意
+                case 1: return "I";
+                case 2: return "II";
+                case 3: return "III";
+                case 4: return "IV";
+                case 5: return "V";
+                case 6: return "VI";
+                case 7: return "VII";
+                case 8: return "VIII";
+                case 9: return "IX";
+                case 10: return "X";
+                case 20: return "XX";
+                case 30: return "XXX";
+                case 40: return "XL";
+                case 50: return "L";
+                case 60: return "LX";
+                case 70: return "LXX";
+                case 80: return "LXXX";
+                case 90: return "XC";
+                case 100: return "C";
+                case 200: return "CC";
+                case 300: return "CCC";
+                case 400: return "CD";
+                case 500: return "D";
+                case 600: return "DC";
+                case 700: return "DCC";
+                case 800: return "DCCC";
+                case 900: return "CM";
+                case 1000: return "M";
+                case 2000: return "MM";
+                case 3000: return "MMM";
+                default: goto fail;
                 }
             }
-            return res;
-        }
-        // 查找数值对应的罗马字符
-        inline const char* convertor(int num) {
-            switch (num) {
-            case 0: fail:return ""; // 0为特殊情况，需注意
-            case 1: return "I";
-            case 2: return "II";
-            case 3: return "III";
-            case 4: return "IV";
-            case 5: return "V";
-            case 6: return "VI";
-            case 7: return "VII";
-            case 8: return "VIII";
-            case 9: return "IX";
-            case 10: return "X";
-            case 20: return "XX";
-            case 30: return "XXX";
-            case 40: return "XL";
-            case 50: return "L";
-            case 60: return "LX";
-            case 70: return "LXX";
-            case 80: return "LXXX";
-            case 90: return "XC";
-            case 100: return "C";
-            case 200: return "CC";
-            case 300: return "CCC";
-            case 400: return "CD";
-            case 500: return "D";
-            case 600: return "DC";
-            case 700: return "DCC";
-            case 800: return "DCCC";
-            case 900: return "CM";
-            case 1000: return "M";
-            case 2000: return "MM";
-            case 3000: return "MMM";
-            default: goto fail;
+            string intToRoman2(int num) {
+                return (string)convertor(num / 1000 * 1000) // 计算千位罗马字符
+                    + convertor(num / 100 % 10 * 100) // 计算百位罗马字符
+                    + convertor(num / 10 % 10 * 10) // 计算十位罗马字符
+                    + convertor(num % 10); // 计算个位罗马字符
+            }
+            int romatoint(char c){
+                //DEBUG
+                if(c=='T')return 0;
+                if(c=='I')return 1;
+                if(c=='V')return 5;
+                if(c=='X')return 10;
+                if(c=='L')return 50;
+                if(c=='C')return 100;
+                if(c=='D')return 500;
+                if(c=='M')return 1000;
+            }
+            int romanToInt(string s) {
+                s.push_back('T');
+                int last = 0;
+                int ret = 0;
+                int now = 0;
+                for(char c:s){
+                    last = now;
+                    now = romatoint(c);
+                    if(last<now){ret-=last;}
+                    else{ret += last;}
+                }
+                return ret;
             }
         }
-        string intToRoman2(int num) {
-            return (string)convertor(num / 1000 * 1000) // 计算千位罗马字符
-                + convertor(num / 100 % 10 * 100) // 计算百位罗马字符
-                + convertor(num / 10 % 10 * 10) // 计算十位罗马字符
-                + convertor(num % 10); // 计算个位罗马字符
-        }
-        int romatoint(char c){
-            //DEBUG
-            if(c=='T')return 0;
-            if(c=='I')return 1;
-            if(c=='V')return 5;
-            if(c=='X')return 10;
-            if(c=='L')return 50;
-            if(c=='C')return 100;
-            if(c=='D')return 500;
-            if(c=='M')return 1000;
-        }
-        int romanToInt(string s) {
-            s.push_back('T');
-            int last = 0;
-            int ret = 0;
-            int now = 0;
-            for(char c:s){
-                last = now;
-                now = romatoint(c);
-                if(last<now){ret-=last;}
-                else{ret += last;}
-            }
-            return ret;
-        }
-    }
-    namespace math{
         #define int long long
         //注释：此三者预期工作环境为long long
         //bitset的大小需要自己更改，下方变量是方便测试用的
@@ -732,6 +925,62 @@ for(int i = 1; i <= times; i++){\
         }
     }
     namespace data_struct{
+        fast void set(const void* _Dist,const void* _Val,size_t size){
+            unsigned char* Dist = (unsigned char*)_Dist, * Val = (unsigned char*)_Val;
+            while(size--){
+                *(Dist++) = *(Val++);
+            }
+        }
+        fast void set(unsigned char* Dist,unsigned char* Val,size_t size){
+            while(size--){
+                *(Dist++) = *(Val++);
+            }
+        }
+        fast void set(void* _Dist,void* _Val,size_t repeat,size_t each_size){
+            unsigned char* Dist = (unsigned char*)_Dist, * Val = (unsigned char*)_Val;
+            while(repeat--){
+                set(Dist,Val,each_size);
+                Dist += each_size;
+            }
+        }
+        namespase arr{
+            template<typename _Ty,int size>
+            class arr{
+                public:
+                _Ty data[size];
+                fast _Ty& operator[](const size_t x){
+                    return *(data+x-1);
+                }
+                fast void set_memset(_Ty _val){
+                    _Ty temp = _val;
+                    ::set(data,&temp,size,sizeof(_Ty));
+                }
+                fast void set(_Ty _val){
+                    _Ty const* be = begin();
+                    _Ty const * en = end();
+                    for(_Ty* i = be; i != en; i++){
+                        // i->operator=(_val);
+                        *(i) = _val;
+                    }
+                }
+                constexpr fast _Ty* begin(){
+                    return data+0;
+                }
+                constexpr fast _Ty* end(){
+                    return data+size;
+                }
+                fast void print(){
+                    for(_Ty*i = begin();i!=end();i++){
+                        cout << *i << " ";
+                    }
+                    cout << endl;
+                }
+                template<typename t>
+                fast void sort(t cmp){
+                    ::sort(begin(),end(),cmp);
+                }
+            };
+        }
         namespace heap{
             template<typename _Ty1>
             __forceinline void min_eq(_Ty1&a,_Ty1&b){

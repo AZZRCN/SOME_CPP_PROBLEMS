@@ -28,6 +28,11 @@ struct ListNode {
 #include <queue>
 #include <cstring>
 #include <algorithm>
+#include <unordered_map>
+#include <unordered_set>
+#include <functional>
+#include <map>
+#include <set>
 using namespace std;
 template<typename a,typename b,typename c>
 class pair_3{
@@ -40,79 +45,41 @@ class pair_3{
         second = o2;
         third = o3;
     }
-   
 };
-
-
-
-
-
-
-
-
-
-
-
-
-#define fast __forceinline __fastcall
-fast void set(const void* _Dist,const void* _Val,size_t size){
-    unsigned char* Dist = (unsigned char*)_Dist, * Val = (unsigned char*)_Val;
-    while(size--){
-        *(Dist++) = *(Val++);
-    }
-}
-fast void set(unsigned char* Dist,unsigned char* Val,size_t size){
-    while(size--){
-        *(Dist++) = *(Val++);
-    }
-}
-fast void set(void* _Dist,void* _Val,size_t repeat,size_t each_size){
-    unsigned char* Dist = (unsigned char*)_Dist, * Val = (unsigned char*)_Val;
-    while(repeat--){
-        set(Dist,Val,each_size);
-        Dist += each_size;
-    }
-}
-
-template<typename _Ty,int size>
-class arr{
-    public:
-    _Ty data[size];
-    fast _Ty& operator[](const size_t x){
-        return *(data+x-1);
-    }
-    fast void set(_Ty _val){
-        ::set(data,&_val,size,sizeof(_Ty));
-    }
-    _Ty* begin(){
-        return data+0;
-    }
-    _Ty* end(){
-        return data+size;
-    }
-    fast void print(){
-        for(_Ty*i = begin();i!=end();i++){
-            cout << *i << " ";
+// template <typename T>
+// std::ostream& operator<<(std::ostream& os, const std::vector<T>& vec) {
+//     os << "{";
+//     const size_t en = vec.size();
+//     for(int i = 0; i < en; i++){
+//         cout << vec[i];
+//         if(i+1<en){
+//             cout << ',';
+//         }
+//     }
+//     os << "}";
+//     return os;
+// }
+class Solution {
+public:
+    string toLowerCase(string s) {
+        for(char&c :s){
+            c |= 32;
         }
-        cout << endl;
-    }
-    template<typename t>
-    fast void sort(t cmp){
-        ::sort(begin(),end(),cmp);
+        return s;
     }
 };
-int main(){
-    less<int>();
-    arr<int,5> a;
-    a[1]=5;
-    a[2]=6;
-    a[3]=7;
-    a[4]=8;
-    a[5]=9;
-    // a.set(10);
-    // cout << a[1];
-    a.sort(less<int>());
-    a.print();
-    a.sort(greater<int>());
-    a.print();
-}
+// template <typename t1,typename t2>
+// std::ostream& operator<<(std::ostream& os, const std::map<t1,t2>& mp) {
+//     os << "{";
+//     int pos = 0;
+//     const int en = mp.size();
+//     for(pair<t1,t2> i:mp){
+//         cout << "{" << i.first << "," << i.second << "}";
+//         if(pos + 1 < en){
+//             pos++;
+//             cout << ",\n";
+//         }
+//     }
+//     os << "}";
+//     return os;
+// }
