@@ -33,6 +33,7 @@ struct ListNode {
 #include <functional>
 #include <map>
 #include <set>
+#include <bitset>
 using namespace std;
 template<typename a,typename b,typename c>
 class pair_3{
@@ -46,40 +47,18 @@ class pair_3{
         third = o3;
     }
 };
-// template <typename T>
-// std::ostream& operator<<(std::ostream& os, const std::vector<T>& vec) {
-//     os << "{";
-//     const size_t en = vec.size();
-//     for(int i = 0; i < en; i++){
-//         cout << vec[i];
-//         if(i+1<en){
-//             cout << ',';
-//         }
-//     }
-//     os << "}";
-//     return os;
-// }
-class Solution {
-public:
-    string toLowerCase(string s) {
-        for(char&c :s){
-            c |= 32;
-        }
-        return s;
+template<int size>
+class Darr{
+    public:
+    int d[size+1];
+    int data[size+1];
+    void init(){
+        
     }
 };
-// template <typename t1,typename t2>
-// std::ostream& operator<<(std::ostream& os, const std::map<t1,t2>& mp) {
-//     os << "{";
-//     int pos = 0;
-//     const int en = mp.size();
-//     for(pair<t1,t2> i:mp){
-//         cout << "{" << i.first << "," << i.second << "}";
-//         if(pos + 1 < en){
-//             pos++;
-//             cout << ",\n";
-//         }
-//     }
-//     os << "}";
-//     return os;
-// }
+class Solution {
+public:
+    int countDays(int days, vector<vector<int>>& meetings) {
+        
+    }
+};

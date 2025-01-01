@@ -112,6 +112,58 @@ for(int i = 1; i <= times; i++){\
         }
     }
     namespace io{
+        //PART OF OPERATORS OF COUT
+        // template <typename t1,typename t2>
+        // std::ostream& operator<<(std::ostream& os, const std::map<t1,t2>& mp) {
+        //     os << "{";
+        //     int pos = 0;
+        //     const int en = mp.size();
+        //     for(pair<t1,t2> i:mp){
+        //         cout << "{" << i.first << "," << i.second << "}";
+        //         if(pos + 1 < en){
+        //             pos++;
+        //             cout << ",\n";
+        //         }
+        //     }
+        //     os << "}";
+        //     return os;
+        // }
+        // template <typename t1,typename t2>
+        // std::ostream& operator<<(std::ostream& os, const std::pair<t1,t2>& p) {
+        //     os << "{" << p.first << "," << p.second << "}";
+        //     return os;
+        // }
+        // template <typename T>
+        // std::ostream& operator<<(std::ostream& os, const std::vector<T>& vec) {
+        //     os << "{";
+        //     const size_t en = vec.size();
+        //     for(int i = 0; i < en; i++){
+        //         cout << vec[i];
+        //         if(i+1<en){
+        //             cout << ',';
+        //         }
+        //     }
+        //     os << "}";
+        //     return os;
+        // }
+        //PART END
+        long long read_move(string&s,int&move_start_pos){
+            bool zf = true;
+            if(s[move_start_pos]=='+'||s[move_start_pos]=='-'){
+                if(s[move_start_pos]=='-'){zf=false;}
+                move_start_pos++;
+            }
+            long long ret=0;
+            while(move_start_pos<s.size()&&is_digit(s[move_start_pos])){
+                ret = ret*10+s[move_start_pos++]-'0';
+            }
+            if(zf==true){
+                return ret;
+            }
+            else{
+                return -ret;
+            }
+        }
         char sta[35];
         char c;
         void in(unsigned long long& x){
@@ -228,6 +280,90 @@ for(int i = 1; i <= times; i++){\
         //     for(pair<_Count,size_t> i:c){ret.push_back(i);}
         //     return ret;
         // }
+        template<typename _Ty>
+        unordered_set<_Ty> most(vector<_Ty> &vec){
+            unordered_map<_Ty, size_t> mp;
+            unordered_set<_Ty> _;
+            size_t __ = 0;
+            for (_Ty i : vec){
+                if (mp.find(i) == mp.end()){mp.insert(make_pair(i, 1));}
+            else{mp[i]++;}}
+            for (pair<_Ty, size_t> i : mp){
+                if (i.second > __){
+                    _.clear();_.insert(i.first);
+                __ = i.second;continue;}
+                if (i.second == __){_.insert(i.first);continue;}
+            } return _;
+        }
+        template<typename _Ty>
+        vector<_Ty> most(vector<_Ty>& vec){
+            unordered_map<_Ty,size_t> mp;
+            for(_Ty i : mp){
+                if(mp.find(i) == mp.end()){
+                    mp.insert(make_pair(i,1));
+                }
+                else{
+                    mp[i]++;
+                }
+            }
+            vector<_Ty> _;
+            size_t __ = 0;
+            for(pair<_Ty,size_t> i:mp){
+                if(i.second>__){
+                    _.clear();
+                    _.push_back(i.first);
+                    __ = i.second;
+                    continue;
+                }
+                if(i.second == __){
+                    _.push_back(i.first);
+                    continue;
+                }
+            }
+            return _;
+        }
+        vector<pair<size_t,size_t>> elements_in_vector_position(vector<int>& Dist,vector<int>& src){
+            //locate
+            vector<pair<int,int>> v;
+            for(int i = 0; i < Dist.size(); i++){
+                v.push_back({Dist[i],i});
+            }
+            sort(v.begin(),v.end());
+            sort(src.begin(),src.end());
+            //now we have the nums and the positions
+            int v_cur = 0;
+            int src_cur = 0;
+            int last = 0;
+            int be,en;
+            vector<pair<size_t,size_t>> ret;
+            #define safe (v_cur<v.size()&&src_cur<src.size())
+            for(;v_cur<v.size()&&src_cur<src.size();){
+                while(safe && v[v_cur].first != src[src_cur]){
+                    while(safe&&v[v_cur].first>src[src_cur]){
+                        src_cur++;
+                        ret.push_back({0,0});
+                    }
+                    while(safe&&v[v_cur].first<src[src_cur]){
+                        v_cur++;
+                    }
+                }
+                if(!safe){
+                    break;
+                }
+                last = v[v_cur].first;
+                be = v[v_cur].second;
+                for(;v_cur<v.size()&&v[v_cur].first==last;v_cur++);
+                en = v[v_cur-1].second;
+                ret.push_back({be,en});
+                v_cur++;
+                src_cur++;
+            }
+            #undef safe
+            for(;src_cur<src.size();src_cur++){
+                ret.push_back({0,0});
+            }
+            return ret;
+        }
         template<typename _Count>
         inline vector<pair<_Count,size_t>> count_unorder(vector<_Count> v,vector<pair<_Count,size_t>>&ret){
             unordered_map<_Count,size_t> c;
@@ -476,6 +612,16 @@ for(int i = 1; i <= times; i++){\
         }
     }
     namespace bin{
+        template<int sus_size=64>
+        string bin_to_string(unsigned long long x){
+            static_assert(sus_size>0,"你还给人留活路吗？");
+            if(x==0){return"0";}
+            bitset<sus_size> bs;int last = 0;string ret;
+            while(x&&last<sus_size){bs[last++]=(x&1);x>>=1;}
+            last--;
+            while(last>=0){ret.push_back(bs[last--]|'0');}
+            return ret;
+        }
         template<typename T>
         bool mem_equal(T a,T b){
             char* _a = (char*)&a;
@@ -1273,6 +1419,19 @@ namespace AZZR_PROJECTS{
             }
         }
         return (l+r)/2;
+    }
+    double myPow(double x, int n) {
+        if(x == (double)(1))return 1;
+        if(n<0){
+            x = 1/x;
+        }
+        double ans = 1;
+        while(n){
+            if((n&1)) ans *= x;
+            n/=2;
+            x*=x;
+        }
+        return ans;
     }
     #ifdef _WINDOWS_
     void get_windows_console_key_msgs(){
