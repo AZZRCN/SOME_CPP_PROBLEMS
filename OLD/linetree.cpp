@@ -213,3 +213,58 @@ int main(){
     }
 }
 */
+/*
+力扣：729
+一个bool类型线段树，query查询是否区间内有1，update插入（我忘的差不多了，2025就成了业余爱好了）
+class MyCalendar {
+    unordered_set<int> tree, lazy;
+
+public:
+    bool query(int start, int end, int l, int r, int idx) {
+        if (r < start || end < l) {
+            return false;
+        }
+        //如果该区间已被预订，则直接返回 
+        if (lazy.count(idx)) {
+            return true;
+        }
+        if (start <= l && r <= end) {
+            return tree.count(idx);
+        }
+        int mid = (l + r) >> 1;
+        return query(start, end, l, mid, 2 * idx) ||
+               query(start, end, mid + 1, r, 2 * idx + 1);
+    }
+
+    void update(int start, int end, int l, int r, int idx) {
+        if (r < start || end < l) {
+            return;
+        }
+        if (start <= l && r <= end) {
+            tree.emplace(idx);
+            lazy.emplace(idx);
+        } else {
+            int mid = (l + r) >> 1;
+            update(start, end, l, mid, 2 * idx);
+            update(start, end, mid + 1, r, 2 * idx + 1);
+            tree.emplace(idx);
+            if (lazy.count(2 * idx) && lazy.count(2 * idx + 1)) {
+                lazy.emplace(idx);
+            }
+        }
+    }
+
+    bool book(int start, int end) {
+        if (query(start, end - 1, 0, 1e9, 1)) {
+            return false;
+        }
+        update(start, end - 1, 0, 1e9, 1);
+        return true;
+    }
+};
+
+作者：力扣官方题解
+链接：https://leetcode.cn/problems/my-calendar-i/solutions/1643942/wo-de-ri-cheng-an-pai-biao-i-by-leetcode-nlxr/
+来源：力扣（LeetCode）
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+*/

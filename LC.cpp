@@ -35,30 +35,15 @@ struct ListNode {
 #include <set>
 #include <bitset>
 using namespace std;
-template<typename a,typename b,typename c>
-class pair_3{
-    public:
-    a first;
-    b second;
-    c third;
-    __forceinline pair_3(a o1,b o2,c o3){
-        first = o1;
-        second = o2;
-        third = o3;
+
+LIS<string> l;
+int main(){
+    for(int i = 1; i <= 10; i++){
+        l.insert(to_string( i*10));
     }
-};
-template<int size>
-class Darr{
-    public:
-    int d[size+1];
-    int data[size+1];
-    void init(){
-        
+    l.pull();
+    for(int i = 1; i <= 10; i++){
+        cout << l.search(to_string( i*10)) << endl;
     }
-};
-class Solution {
-public:
-    int countDays(int days, vector<vector<int>>& meetings) {
-        
-    }
-};
+    cout << l.search(to_string(11)) << endl;
+}
