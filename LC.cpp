@@ -1,3 +1,5 @@
+#define private public
+#define protected public
 #ifndef NULL
 #define NULL 0
 #endif
@@ -35,15 +37,21 @@ struct ListNode {
 #include <set>
 #include <bitset>
 using namespace std;
-
-LIS<string> l;
 int main(){
-    for(int i = 1; i <= 10; i++){
-        l.insert(to_string( i*10));
-    }
-    l.pull();
-    for(int i = 1; i <= 10; i++){
-        cout << l.search(to_string( i*10)) << endl;
-    }
-    cout << l.search(to_string(11)) << endl;
+    // puts("/**\n * Definition for a binary tree node.\n * struct TreeNode {\n *     int val;\n *     TreeNode *left;\n *     TreeNode *right;\n *     TreeNode() : val(0), left(nullptr), right(nullptr) {}\n *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}\n *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}\n * };\n */\nclass BSTIterator {\npublic:\n    BSTIterator(TreeNode* root) {\n        \n    }\n    \n    int next() {\n        \n    }\n    \n    bool hasNext() {\n        \n    }\n};\n\n/**\n * Your BSTIterator object will be instantiated and called as such:\n * BSTIterator* obj = new BSTIterator(root);\n * int param_1 = obj->next();\n * bool param_2 = obj->hasNext();\n */");
+    // string str;
+    // vector<string> out;
+    // while((getline(cin,str),str!="exit")){
+    //     if((str[0]=='/'||str[0]==' ')&&str[1]=='*'){
+    //         out .push_back( str.substr(min(3ULL,str.size())));
+    //     }
+    //     else{
+    //         out.push_back(str);
+    //     }
+    // }
+    // for(string i:out){
+    //     cout << i << endl;
+    // }
+    // throw out_of_range("ABC");
+    vector<int> v;
 }

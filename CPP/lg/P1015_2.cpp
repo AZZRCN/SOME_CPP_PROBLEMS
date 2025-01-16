@@ -1,3 +1,5 @@
+//类型：高精度
+//注释模板：废弃，mod固定，通过template
 #include <vector>
 #include <iostream>
 #include <algorithm>

@@ -97,6 +97,8 @@
         "stdio.h": "c",
         "_mingw_print_push.h": "c",
         "swprintf.inl": "c",
-        "crtdefs.h": "c"
+        "crtdefs.h": "c",
+        ".env*": "dotenv",
+        "vector_oringinal": "cpp"
     }
 }

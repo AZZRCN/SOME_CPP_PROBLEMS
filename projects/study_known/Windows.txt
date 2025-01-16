@@ -1,0 +1,6 @@
+查看保留存储
+dism /Online /Get-ReservedStorageState
+开启保留存储
+dism /Online /Set-ReservedStorageState /State:Enabled
+关闭保留存储
+dism /Online /Set-ReservedStorageState /State:Disabled
