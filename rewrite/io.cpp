@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdarg.h> // 用于可变参数函数
 
+
 class out {
 public:
     // operator() 用于处理不同的数据类型
