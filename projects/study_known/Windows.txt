@@ -4,3 +4,7 @@ dism /Online /Get-ReservedStorageState
 dism /Online /Set-ReservedStorageState /State:Enabled
 关闭保留存储
 dism /Online /Set-ReservedStorageState /State:Disabled
+
+有关Windows更新的服务(在服务里)
+显示：更新 Orchestrator 服务
+名称：UsoSvr

@@ -36,22 +36,78 @@ struct ListNode {
 #include <map>
 #include <set>
 #include <bitset>
+// #include <windows.h>
 using namespace std;
+#include <cstdint>
+#include <iostream>
+
+struct int128 {
+    int64_t high;
+    int64_t low;
+
+    // 构造函数
+    int128() : high(0), low(0) {}
+    int128(int64_t high, int64_t low) : high(high), low(low) {}
+
+    // 运算符重载
+    int128 operator+(const int128& other) const {
+        int128 result;
+        result.low = low + other.low;
+        result.high = high + other.high + (result.low < low);
+        return result;
+    }
+
+    int128 operator-(const int128& other) const {
+        int128 result;
+        result.low = low - other.low;
+        result.high = high - other.high - (result.low > low);
+        return result;
+    }
+
+    int128 operator*(const int128& other) const {
+        int128 result;
+        result.low = low * other.low;
+        result.high = high * other.low + low * other.high + (result.low >> 63);
+        return result;
+    }
+
+    int128 operator/(const int128& other) const {
+        int128 result;
+        result.low = low / other.low;
+        result.high = high / other.low + (low % other.low != 0);
+        return result;
+    }
+
+    int128 operator%(const int128& other) const {
+        int128 result;
+        result.low = low % other.low;
+        result.high = high % other.low;
+        return result;
+    }
+
+    int128 operator<<(const int64_t& shift) const {
+        int128 result;
+        result.low = low << shift;
+        result.high = high << shift | (low >> (64 - shift));
+        return result;
+    }
+
+    int128 operator>>(const int64_t& shift) const {
+        int128 result;
+        result.low = low >> shift | (high << (64 - shift));
+        result.high = high >> shift;
+        return result;
+    }
+
+    // 输出运算符重载
+    friend std::ostream& operator<<(std::ostream& os, const int128& num) {
+        os << num.high << " " << num.low;
+        return os;
+    }
+};
 int main(){
-    // puts("/**\n * Definition for a binary tree node.\n * struct TreeNode {\n *     int val;\n *     TreeNode *left;\n *     TreeNode *right;\n *     TreeNode() : val(0), left(nullptr), right(nullptr) {}\n *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}\n *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}\n * };\n */\nclass BSTIterator {\npublic:\n    BSTIterator(TreeNode* root) {\n        \n    }\n    \n    int next() {\n        \n    }\n    \n    bool hasNext() {\n        \n    }\n};\n\n/**\n * Your BSTIterator object will be instantiated and called as such:\n * BSTIterator* obj = new BSTIterator(root);\n * int param_1 = obj->next();\n * bool param_2 = obj->hasNext();\n */");
-    // string str;
-    // vector<string> out;
-    // while((getline(cin,str),str!="exit")){
-    //     if((str[0]=='/'||str[0]==' ')&&str[1]=='*'){
-    //         out .push_back( str.substr(min(3ULL,str.size())));
-    //     }
-    //     else{
-    //         out.push_back(str);
-    //     }
-    // }
-    // for(string i:out){
-    //     cout << i << endl;
-    // }
-    // throw out_of_range("ABC");
-    vector<int> v;
+    int128 n(1,1);
+    cout << n;
+    n = n*n;
+    cout << n;
 }

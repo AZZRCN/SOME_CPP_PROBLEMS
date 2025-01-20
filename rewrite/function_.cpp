@@ -1,3 +1,5 @@
+#ifndef AZZR_FUNCTION
+#define AZZR_FUNCTION
 #include <crtdefs.h>
 constexpr inline
 size_t min(const size_t& a,const size_t& b){
@@ -15,3 +17,12 @@ class less{
         return x < y;
     }
 };
+template<typename t>
+  inline void
+  swap(t&__x, t&__y) noexcept
+  {
+    t __tmp = __x;
+    __x = __y;
+    __y = __tmp;
+  }
+#endif

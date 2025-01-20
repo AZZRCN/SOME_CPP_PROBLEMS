@@ -1377,116 +1377,133 @@ for(int i = 1; i <= times; i++){\
         }
     }
 }
-namespace AZZR_PROJECTS{
-    bool rev_file_with_key(const char* path,unsigned long long key) {
-        FILE* f = fopen64(path, "rb+");
-        if (!f) {
-            perror("File opening failed");
-            return false;
-        }
-        unsigned char keys[8];
-        // sizeof(unsigned long long);
-        for(int i = 0; i < 8; i++){
-            keys[i] = (key&0xFF);
-            key >>= 8;
-        }
-        fseeko64(f, 0, SEEK_END);
-        unsigned long long len = ftello64(f);
-        fseeko64(f, 0, SEEK_SET);
-        for (unsigned long long i = 0; i < len; i++) {
-            fseeko64(f, i, SEEK_SET);  // 每次读取前定位到正确的位置
-            unsigned char c;
-            fread(&c, sizeof(unsigned char), 1, f);
-            c = (~c)^(keys[i%8]);  // 对字符进行位取反
-            fseeko64(f, i, SEEK_SET);  // 写之前再次定位到正确的位置
-            fwrite(&c, sizeof(unsigned char), 1, f);
-        }
-        fclose(f);
-        return true;
+/**
+ * @package:个人自制
+*/
+/**
+ * @name:传入路径和算子，来反转一个文件的内容
+*/
+bool rev_file_with_key(const char* path,unsigned long long key) {
+    FILE* f = fopen64(path, "rb+");
+    if (!f) {
+        perror("File opening failed");
+        return false;
     }
-    int mySqrt(uint32_t x) {
-        uint64_t l=0,r=0xFFFF,mid;
-        while(r>=l){
-            mid = (l+r)/2;//找出中间
-            if(mid*mid==x){//返回条件
-                return mid;
-            }
-            if(mid*mid<x){//左侧没有的判定条件
-                l = mid + 1;
-            }
-            else{//右侧没有的判定条件
-                r = mid-1;
-            }
-        }
-        return (l+r)/2;
+    unsigned char keys[8];
+    // sizeof(unsigned long long);
+    for(int i = 0; i < 8; i++){
+        keys[i] = (key&0xFF);
+        key >>= 8;
     }
-    double myPow(double x, int n) {
-        if(x == (double)(1))return 1;
-        if(n<0){
-            x = 1/x;
-        }
-        double ans = 1;
-        while(n){
-            if((n&1)) ans *= x;
-            n/=2;
-            x*=x;
-        }
-        return ans;
+    fseeko64(f, 0, SEEK_END);
+    unsigned long long len = ftello64(f);
+    fseeko64(f, 0, SEEK_SET);
+    for (unsigned long long i = 0; i < len; i++) {
+        fseeko64(f, i, SEEK_SET);  // 每次读取前定位到正确的位置
+        unsigned char c;
+        fread(&c, sizeof(unsigned char), 1, f);
+        c = (~c)^(keys[i%8]);  // 对字符进行位取反
+        fseeko64(f, i, SEEK_SET);  // 写之前再次定位到正确的位置
+        fwrite(&c, sizeof(unsigned char), 1, f);
     }
-    #ifdef _WINDOWS_
-    void get_windows_console_key_msgs(){
-        HANDLE hInput = GetStdHandle(STD_INPUT_HANDLE);
-        if (hInput == INVALID_HANDLE_VALUE) {
-            // cerr << "获取标准输入句柄失败！" << endl;
-            return 1;
+    fclose(f);
+    return true;
+}
+/**
+ * @name:平方根
+*/
+int mySqrt(uint32_t x) {
+    uint64_t l=0,r=0xFFFF,mid;
+    while(r>=l){
+        mid = (l+r)/2;//找出中间
+        if(mid*mid==x){//返回条件
+            return mid;
         }
-        INPUT_RECORD ibufs[128];
-        // cout << "请输入字符（Ctrl+C 退出）：" << endl;
-        while (true) {
-            DWORD eventsRead;
-            // 检查输入缓冲区中是否有事件
-            if (PeekConsoleInput(hInput, ibufs, 128, &eventsRead) && eventsRead > 0) {
-                DWORD count;
-                // 读取输入事件
-                ReadConsoleInput(hInput, ibufs, eventsRead, &count);
-                for (DWORD i = 0; i < count; i++) {
-                    if (ibufs[i].EventType == KEY_EVENT && ibufs[i].Event.KeyEvent.bKeyDown) {
-                        // 输出按下的字符
-                        putchar(' ');
-                        putchar(ibufs[i].Event.KeyEvent.uChar.AsciiChar);
-                        // 在控制台输出换行符，以便后续输入清晰可见
-                        fflush(stdout); // 确保字符立即显示
-                    }
+        if(mid*mid<x){//左侧没有的判定条件
+            l = mid + 1;
+        }
+        else{//右侧没有的判定条件
+            r = mid-1;
+        }
+    }
+    return (l+r)/2;
+}
+/**
+ * @name:阶乘，logn
+*/
+double myPow(double x, int n) {
+    if(x == (double)(1))return 1;
+    if(n<0){
+        x = 1/x;
+    }
+    double ans = 1;
+    while(n){
+        if((n&1)) ans *= x;
+        n/=2;
+        x*=x;
+    }
+    return ans;
+}
+/**
+ * @name:获取控制台支付消息
+ * @need:windows.h
+*/
+void get_windows_console_key_msgs(){
+    HANDLE hInput = GetStdHandle(STD_INPUT_HANDLE);
+    if (hInput == INVALID_HANDLE_VALUE) {
+        // cerr << "获取标准输入句柄失败！" << endl;
+        return 1;
+    }
+    INPUT_RECORD ibufs[128];
+    // cout << "请输入字符（Ctrl+C 退出）：" << endl;
+    while (true) {
+        DWORD eventsRead;
+        // 检查输入缓冲区中是否有事件
+        if (PeekConsoleInput(hInput, ibufs, 128, &eventsRead) && eventsRead > 0) {
+            DWORD count;
+            // 读取输入事件
+            ReadConsoleInput(hInput, ibufs, eventsRead, &count);
+            for (DWORD i = 0; i < count; i++) {
+                if (ibufs[i].EventType == KEY_EVENT && ibufs[i].Event.KeyEvent.bKeyDown) {
+                    // 输出按下的字符
+                    /*此时ibufs[i].Event.KeyEvent.uChar.AsciiChar就是按键消息*/
+                    /*可进行修改*/
+                    putchar(' ');
+                    putchar(ibufs[i].Event.KeyEvent.uChar.AsciiChar);
+                    // 在控制台输出换行符，以便后续输入清晰可见
+                    fflush(stdout); // 确保字符立即显示
                 }
             }
-            // 加入延时，避免占用CPU资源
-            Sleep(10);
         }
+        // 加入延时，避免占用CPU资源
+        Sleep(10);
     }
-    void get_windows_console_what_outputed(){
-        HANDLE hConOut = GetStdHandle(STD_OUTPUT_HANDLE);
-        DWORD dwConSize;
-        COORD upperLeft = {0, 0};
-        CONSOLE_SCREEN_BUFFER_INFO csbi;
-        GetConsoleScreenBufferInfo(hConOut, &csbi);
-        dwConSize = csbi.dwSize.X * csbi.dwSize.Y;
-        CHAR_INFO* chiBuffer = new CHAR_INFO[dwConSize];
-        if (!ReadConsoleOutput(hConOut, chiBuffer, csbi.dwSize, upperLeft, &csbi.srWindow)) {
-            std::cerr << "Failed to read console output." << std::endl;
-            return 1;
-        }
-        std::ofstream ofs("console_output.txt");
-        if (!ofs.is_open()) {
-            std::cerr << "Failed to open file for writing." << std::endl;
-            delete[] chiBuffer;
-            return 1;
-        }
-        for (DWORD i = 0; i < dwConSize; ++i) {
-            ofs << chiBuffer[i].Char.AsciiChar;
-        }
-        ofs.close();
+}
+/**
+ * @name:获取控制台都说了点啥(控制台显示内容)
+*/
+void get_windows_console_what_outputed(){
+    HANDLE hConOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    DWORD dwConSize;
+    COORD upperLeft = {0, 0};
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    GetConsoleScreenBufferInfo(hConOut, &csbi);
+    dwConSize = csbi.dwSize.X * csbi.dwSize.Y;
+    CHAR_INFO* chiBuffer = new CHAR_INFO[dwConSize];
+    if (!ReadConsoleOutput(hConOut, chiBuffer, csbi.dwSize, upperLeft, &csbi.srWindow)) {
+        std::cerr << "Failed to read console output." << std::endl;
+        return 1;
+    }
+    std::ofstream ofs("console_output.txt");
+    if (!ofs.is_open()) {
+        std::cerr << "Failed to open file for writing." << std::endl;
         delete[] chiBuffer;
-        std::cout << "Console output captured and written to 'console_output.txt'." << std::endl;
+        return 1;
     }
-    #endif
+    for (DWORD i = 0; i < dwConSize; ++i) {
+        ofs << chiBuffer[i].Char.AsciiChar;
+    }
+    ofs.close();
+    delete[] chiBuffer;
+    std::cout << "Console output captured and written to 'console_output.txt'." << std::endl;
 }
