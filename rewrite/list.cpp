@@ -2,8 +2,8 @@
 #include "io.cpp"
 #include "dbg.cpp"
 #include "Book.cpp"
+#include "defines.cpp"
 out o;
-#define err(cond) if(cond){throw str_err("Hit An Err Because condition " #cond);}
 
 template<typename T>
 class node {

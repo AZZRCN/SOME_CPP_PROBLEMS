@@ -1,7 +1,8 @@
 #ifndef AZZR_PROXY
 #include "empty_signs.cpp"
 #include "io.cpp"
-#include "type_trait.cpp"
+#include "extra_type_trait.cpp"
+#include "defines.cpp"
 template<typename _Ty>
 class proxy {
 public:
@@ -12,7 +13,7 @@ public:
         return *this;
     }
 
-    operator _Ty&() const {
+    operator _Ty() const {
         return ref_;
     }
 
@@ -42,20 +43,5 @@ private:
     unsigned char& ref_;
     unsigned long long off;
 };
-template<typename t>
-void out::operator()(proxy<t> p){
-    // operator()((t)p);
-    operator()(static_cast<t>(p.operator t()));
-}
-template<>
-void out::operator()(proxy<for_bitset_proxy> p){
-    operator()((bool)p);
-}
 #define AZZR_PROXY
 #endif
-int main(){
-    int n = 10;
-    proxy<int> p(n);
-    out o;
-    o(p);
-}

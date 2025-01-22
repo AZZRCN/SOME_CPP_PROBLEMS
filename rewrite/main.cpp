@@ -1,15 +1,10 @@
 #include <stdlib.h>
 #include "io.cpp"
 #include "dbg.cpp"
-// #include "Book.cpp"
-#include "saver.cpp"
-#include "reader.cpp"
-#include "bitset.cpp"
-// #include "io.h" // 引入改进后的 out 类定义
+#include "arr.cpp"
+#include "pairs.cpp"
+#include "defines.cpp"
 out o;
-saver s;
-reader r;
-#define err(cond) if(cond){throw str_err("Hit An Err Because condition " #cond);}
 size_t rcount0(size_t l,size_t r){
     size_t ans = 0;
     l|=r;
@@ -21,9 +16,7 @@ size_t rcount0(size_t l,size_t r){
     if(!(l&0x1)){ans+=1;l>>=1;}
     return ans;
 }
-bitset<100> bs;
 int main() {
-    bs[1]=1;
-    o(bs[1]);
-    return 0;
+    arr<int,5> v;
+    v.set(1);
 }

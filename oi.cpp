@@ -27,6 +27,8 @@
  * How to Find me:
  * Bilibili 夕阳下的中学生
  * Github   AZZRCN
+ * 各平台是AZZR,AZZRCN或者BD_AZZR_CN,都有可能失我
+ * 我技术不高，所以没啥技术含量
  * 当成宣传了，希望有人看
  * 
  * 天下大同

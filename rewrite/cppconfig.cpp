@@ -187,7 +187,7 @@
 /*
   Outline of libstdc++ namespaces.
 
-  namespace std
+  
   {
     namespace __debug { }
     namespace __parallel { }
@@ -233,15 +233,12 @@
   For full details see:
   http://gcc.gnu.org/onlinedocs/libstdc++/latest-doxygen/namespaces.html
 */
-namespace std
-{
   typedef __SIZE_TYPE__ 	size_t;
   typedef __PTRDIFF_TYPE__	ptrdiff_t;
 
 #if __cplusplus >= 201103L
   typedef decltype(nullptr)	nullptr_t;
 #endif
-}
 
 # define _GLIBCXX_USE_DUAL_ABI 1
 
@@ -255,10 +252,8 @@ namespace std
 #endif
 
 #if _GLIBCXX_USE_CXX11_ABI
-namespace std
-{
+
   inline namespace __cxx11 __attribute__((__abi_tag__ ("cxx11"))) { }
-}
 namespace __gnu_cxx
 {
   inline namespace __cxx11 __attribute__((__abi_tag__ ("cxx11"))) { }
@@ -282,7 +277,7 @@ namespace __gnu_cxx
 # define _GLIBCXX_BEGIN_NAMESPACE_VERSION namespace __8 {
 # define _GLIBCXX_END_NAMESPACE_VERSION }
 
-namespace std
+
 {
 inline _GLIBCXX_BEGIN_NAMESPACE_VERSION
 #if __cplusplus >= 201402L
@@ -312,7 +307,7 @@ _GLIBCXX_END_NAMESPACE_VERSION
 // Inline namespaces for special modes: debug, parallel, profile.
 #if defined(_GLIBCXX_DEBUG) || defined(_GLIBCXX_PARALLEL) \
     || defined(_GLIBCXX_PROFILE)
-namespace std
+
 {
 _GLIBCXX_BEGIN_NAMESPACE_VERSION
 
@@ -360,7 +355,7 @@ _GLIBCXX_END_NAMESPACE_VERSION
 # endif
 #endif
 
-// Macros for namespace scope. Either namespace std:: or the name
+// Macros for namespace scope. Either :: or the name
 // of some nested namespace within it corresponding to the active mode.
 // _GLIBCXX_STD_A
 // _GLIBCXX_STD_C
@@ -398,7 +393,7 @@ _GLIBCXX_END_NAMESPACE_VERSION
 
 // Inline namespace for long double 128 mode.
 #if defined _GLIBCXX_LONG_DOUBLE_COMPAT && defined __LONG_DOUBLE_128__
-namespace std
+
 {
   inline namespace __gnu_cxx_ldbl128 { }
 }
@@ -434,7 +429,7 @@ namespace std
 // Assert.
 #if defined(_GLIBCXX_ASSERTIONS) \
   || defined(_GLIBCXX_PARALLEL) || defined(_GLIBCXX_PARALLEL_ASSERTIONS)
-namespace std
+
 {
   // Avoid the use of assert, because we're trying to keep the <cassert>
   // include out of the mix.
@@ -546,10 +541,10 @@ namespace std
 #endif
 
 #if __cplusplus > 201402L
-// In C++17 mathematical special functions are in namespace std.
+// In C++17 mathematical special functions are in .
 # define _GLIBCXX_USE_STD_SPEC_FUNCS 1
 #elif __cplusplus >= 201103L && __STDCPP_WANT_MATH_SPEC_FUNCS__ != 0
-// For C++11 and C++14 they are in namespace std when requested.
+// For C++11 and C++14 they are in  when requested.
 # define _GLIBCXX_USE_STD_SPEC_FUNCS 1
 #endif
 
@@ -1380,19 +1375,19 @@ namespace std
 #define _GLIBCXX11_USE_C99_COMPLEX 1
 
 /* Define if C99 functions or macros in <math.h> should be imported in <cmath>
-   in namespace std for C++11. */
+   in  for C++11. */
 #define _GLIBCXX11_USE_C99_MATH 1
 
 /* Define if C99 functions or macros in <stdio.h> should be imported in
-   <cstdio> in namespace std for C++11. */
+   <cstdio> in  for C++11. */
 #define _GLIBCXX11_USE_C99_STDIO 1
 
 /* Define if C99 functions or macros in <stdlib.h> should be imported in
-   <cstdlib> in namespace std for C++11. */
+   <cstdlib> in  for C++11. */
 #define _GLIBCXX11_USE_C99_STDLIB 1
 
 /* Define if C99 functions or macros in <wchar.h> should be imported in
-   <cwchar> in namespace std for C++11. */
+   <cwchar> in  for C++11. */
 #define _GLIBCXX11_USE_C99_WCHAR 1
 
 /* Define if C99 functions in <complex.h> should be used in <complex> for
@@ -1401,19 +1396,19 @@ namespace std
 #define _GLIBCXX98_USE_C99_COMPLEX 1
 
 /* Define if C99 functions or macros in <math.h> should be imported in <cmath>
-   in namespace std for C++98. */
+   in  for C++98. */
 #define _GLIBCXX98_USE_C99_MATH 1
 
 /* Define if C99 functions or macros in <stdio.h> should be imported in
-   <cstdio> in namespace std for C++98. */
+   <cstdio> in  for C++98. */
 #define _GLIBCXX98_USE_C99_STDIO 1
 
 /* Define if C99 functions or macros in <stdlib.h> should be imported in
-   <cstdlib> in namespace std for C++98. */
+   <cstdlib> in  for C++98. */
 #define _GLIBCXX98_USE_C99_STDLIB 1
 
 /* Define if C99 functions or macros in <wchar.h> should be imported in
-   <cwchar> in namespace std for C++98. */
+   <cwchar> in  for C++98. */
 #define _GLIBCXX98_USE_C99_WCHAR 1
 
 /* Define if the compiler supports C++11 atomics. */
@@ -1473,7 +1468,7 @@ namespace std
 /* Define to use Sun versioning in the shared library. */
 /* #undef _GLIBCXX_SYMVER_SUN */
 
-/* Define if C11 functions in <uchar.h> should be imported into namespace std
+/* Define if C11 functions in <uchar.h> should be imported into 
    in <cuchar>. */
 #define _GLIBCXX_USE_C11_UCHAR_CXX11 1
 
@@ -1487,27 +1482,27 @@ namespace std
 #define _GLIBCXX_USE_C99_COMPLEX_TR1 1
 
 /* Define if C99 functions in <ctype.h> should be imported in <tr1/cctype> in
-   namespace std::tr1. */
+   ::tr1. */
 #define _GLIBCXX_USE_C99_CTYPE_TR1 1
 
 /* Define if C99 functions in <fenv.h> should be imported in <tr1/cfenv> in
-   namespace std::tr1. */
+   ::tr1. */
 #define _GLIBCXX_USE_C99_FENV_TR1 1
 
 /* Define if C99 functions in <inttypes.h> should be imported in
-   <tr1/cinttypes> in namespace std::tr1. */
+   <tr1/cinttypes> in ::tr1. */
 #define _GLIBCXX_USE_C99_INTTYPES_TR1 1
 
 /* Define if wchar_t C99 functions in <inttypes.h> should be imported in
-   <tr1/cinttypes> in namespace std::tr1. */
+   <tr1/cinttypes> in ::tr1. */
 #define _GLIBCXX_USE_C99_INTTYPES_WCHAR_T_TR1 1
 
 /* Define if C99 functions or macros in <math.h> should be imported in
-   <tr1/cmath> in namespace std::tr1. */
+   <tr1/cmath> in ::tr1. */
 #define _GLIBCXX_USE_C99_MATH_TR1 1
 
 /* Define if C99 types in <stdint.h> should be imported in <tr1/cstdint> in
-   namespace std::tr1. */
+   ::tr1. */
 #define _GLIBCXX_USE_C99_STDINT_TR1 1
 
 /* Defined if clock_gettime syscall has monotonic and realtime clock support.

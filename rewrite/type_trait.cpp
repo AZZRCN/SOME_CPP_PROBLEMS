@@ -1,13 +1,54 @@
-#ifndef AZZR_TYPE_TRAIT
-#define AZZR_TYPE_TRAIT
-#include "function_.cpp"
+// C++11 <type_traits> -*- C++ -*-
+
+// Copyright (C) 2007-2018 Free Software Foundation, Inc.
+//
+// This file is part of the GNU ISO C++ Library.  This library is free
+// software; you can redistribute it and/or modify it under the
+// terms of the GNU General Public License as published by the
+// Free Software Foundation; either version 3, or (at your option)
+// any later version.
+
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+
+// Under Section 7 of GPL version 3, you are granted additional
+// permissions described in the GCC Runtime Library Exception, version
+// 3.1, as published by the Free Software Foundation.
+
+// You should have received a copy of the GNU General Public License and
+// a copy of the GCC Runtime Library Exception along with this program;
+// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+// <http://www.gnu.org/licenses/>.
+
+/** @file include/type_traits
+ *  This is a Standard C++ Library header.
+ */
+
+#ifndef _GLIBCXX_TYPE_TRAITS
+#define _GLIBCXX_TYPE_TRAITS 1
+
+#pragma GCC system_header
+
+#if __cplusplus < 201103L
+# include <bits/c++0x_warning.h>
+#else
+
 #include "cppconfig.cpp"
+
+#ifdef _GLIBCXX_USE_C99_STDINT_TR1
+# if defined (__UINT_LEAST16_TYPE__) && defined(__UINT_LEAST32_TYPE__)
+  typedef __UINT_LEAST16_TYPE__ uint_least16_t;
+  typedef __UINT_LEAST32_TYPE__ uint_least32_t;
+# else
+// #  include <cstdint>
 #include "stdint.cpp"
-#ifndef __forceinline
-#define __forceinline inline __attribute__((__always_inline__))
+# endif
 #endif
-#define _GLIBCXX_NOEXCEPT_PARM
-#define _GLIBCXX_NOEXCEPT_QUAL
+
+_GLIBCXX_BEGIN_NAMESPACE_VERSION
+
   /**
    * @defgroup metaprogramming Metaprogramming
    * @ingroup utilities
@@ -2897,91 +2938,7 @@ template <typename _From, typename _To>
   };
 #endif // C++2a
 
+_GLIBCXX_END_NAMESPACE_VERSION
+#endif  // C++11
 
-
-
-
-
-    // not
-template<bool _Cond> bool no;
-template<> bool no<true> = false;
-template<> bool no<false> = true;
-
-// and
-template<bool _Cond1, bool _Cond2> bool _and = false;
-template<> bool _and<true, true> = true;
-
-// or
-template<bool _Cond1, bool _Cond2> bool _or = false;
-template<> bool _or<true, true> = true;
-template<> bool _or<true, false> = true;
-template<> bool _or<false, true> = true;
-
-// xor
-template<bool _Cond1, bool _Cond2> bool _xor = false;
-template<> bool _xor<true, false> = true;
-template<> bool _xor<false, true> = true;
-
-// if
-template<bool _Cond, bool _Then, bool _Else> bool _if = _Else;
-template<> bool _if<true, true, false> = true;
-template<> bool _if<true, false, false> = false;
-template<> bool _if<true, true, true> = true;
-template<> bool _if<true, false, true> = false;
-
-// if_same
-template<typename _T1, typename _T2> bool _if_same = false;
-template<typename _T> bool _if_same<_T, _T> = true;
-
-// is_same
-template<typename _T1, typename _T2> bool _is_same = _if_same<_T1, _T2>;
-
-// is_not_same
-template<typename _T1, typename _T2> bool _is_not_same = no<_if_same<_T1, _T2>>;
-
-// isn't zero
-template<int _A> int isnt_zero = (int)((bool)(_A));
-
-// min
-template<int _A, int _B> int _min = (_A < _B) ? _A : _B;
-
-// max
-template<int _A, int _B> int _max = (_A > _B) ? _A : _B;
-
-// add
-template<int _A, int _B> int _add = _A + _B;
-
-// sub
-template<int _A, int _B> int _sub = _A - _B;
-
-// mul
-template<int _A, int _B> int _mul = _A * _B;
-
-// div
-template<int _A, int _B> int _div = _A / _B;
-
-// mod
-template<int _A, int _B> int _mod = _A % _B;
-
-// ceil_div
-template<int _A, int _B> int ceil_div = (_div<_A,_B>)+(isnt_zero<_mod<_A,_B>>);
-
-// equal
-template<int _A, int _B> bool _equal = (_A == _B);
-
-// not_equal
-template<int _A, int _B> bool _not_equal = (_A != _B);
-
-// greater
-template<int _A, int _B> bool _greater = (_A > _B);
-
-// less
-template<int _A, int _B> bool _less = (_A < _B);
-
-// greater_equal
-template<int _A, int _B> bool _greater_equal = (_A >= _B);
-
-// less_equal
-template<int _A, int _B> bool _less_equal = (_A <= _B);
-
-#endif
+#endif  // _GLIBCXX_TYPE_TRAITS

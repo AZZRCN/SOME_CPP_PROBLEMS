@@ -39,12 +39,12 @@ void read_core(t1& a,t2& b,Args&... args)
     {read_core_p(a,b);read_core(args...);}
     else{read_core_val(a);read_core(b,args...);}
 }
-template<typename t>__forceinline void read_core(t& v){read_core_val(v);}
-template<typename t>void read_core_val(t& val){unsigned char* p = (unsigned char*)&val;
-    for(int i=1;i<=sizeof(t);i++){*(p++)=(unsigned char)fgetc(f);}
+template<typename _Tp>__forceinline void read_core(_Tp& v){read_core_val(v);}
+template<typename _Tp>void read_core_val(_Tp& val){unsigned char* p = (unsigned char*)&val;
+    for(int i=1;i<=sizeof(_Tp);i++){*(p++)=(unsigned char)fgetc(f);}
 }
-template<typename t>void read_core_p(t arr,size_t size){unsigned char*p=(unsigned char*)arr;
-    for(int i=1;i<=size*sizeof(remove_cv<t>);i++){*(p++)=(unsigned char)fgetc(f);}
+template<typename _Tp>void read_core_p(_Tp arr,size_t size){unsigned char*p=(unsigned char*)arr;
+    for(int i=1;i<=size*sizeof(remove_cv<_Tp>);i++){*(p++)=(unsigned char)fgetc(f);}
 }
 __forceinline void read_core(void){/*Do nothing*/}
 };
