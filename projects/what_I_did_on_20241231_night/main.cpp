@@ -1,7 +1,5 @@
-#include <stdio.h>
-#include <string.h>
-#include <process.h>
-#include <math.h>
+#include <bits/stdc++.h>
+using namespace std;
 /**
  * 1.系统安全高于一切
  * 2.文件安全高于时间
@@ -174,23 +172,27 @@ class Buffer{
             buf[y1+_round(ans)][x1+i]=c;
         }
     }
-    void put_str(int x,int y,int split,char* a_path,char* str){
-        char* path_end = (char*)a_path;
-        while(*(path_end+1)){path_end++;}
-        for(; *str;x+=split,str++){
-            (*path_end)=(*str);
-            load_font(x,y,a_path);
+    void put_str(int x,int y,string path,string str){
+        int a,b;
+        read_font_config(a,b,path.c_str());
+        if(path.back()!='\\')path.push_back('\\');
+        path.push_back('a');
+        for(char c : str){
+            path.back()=c;
+            load_font(x,y,path.c_str());
+            x += a;
         }
     }
+    // void draw_line_no_end_x_point(const int& x1,const int& y1,const int& x2,const int& y2,const char& c){
+    //     if(x1>x2){
+    //         return (void)draw_line(x2,y2,x1-1,y1,c);
+    //     }
+    //     return (void)draw_line(x1,y1,x2-1,y2,c);
+    // }
 };
-Buffer<50,5> buf;
-char* get_string(const char* str){
-    char* a = (char*)malloc(sizeof(char)*(strlen(str)+1));
-    strcpy(a,str);
-    return a;
-}
+Buffer<100,10> buf;
 int main(){
     buf.data_set('.');
-    buf.put_str(0,0,5,get_string(".\\FT\\A"),get_string("ABC"));
+    buf.put_str(0,0,"FT","AAAAAAAA!");
     buf.out_marked();
 }

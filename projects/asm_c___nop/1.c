@@ -1,1 +1,0 @@
-__asm__ __volatile__("nop");

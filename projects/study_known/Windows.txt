@@ -6,5 +6,6 @@ dism /Online /Set-ReservedStorageState /State:Enabled
 dism /Online /Set-ReservedStorageState /State:Disabled
 
 有关Windows更新的服务(在服务里)
-显示：更新 Orchestrator 服务
+[1]显示：更新 Orchestrator 服务
 名称：UsoSvr
+[2]显示：Windows更新

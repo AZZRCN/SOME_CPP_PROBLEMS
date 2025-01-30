@@ -16,7 +16,16 @@ size_t rcount0(size_t l,size_t r){
     if(!(l&0x1)){ans+=1;l>>=1;}
     return ans;
 }
+template<typename _Ty>
+struct remove_all_test:type_container<_Ty>{};
+template<typename _Ty>
+struct remove_all_test<_Ty*> : remove_all_test<_Ty>{};
+template<typename _Ty>
+struct remove_all_test<_Ty[]> : remove_all_test<_Ty>{};
+template<typename _Ty,size_t x>
+struct remove_all_test<_Ty[x]> : remove_all_test<_Ty>{};
+template<typename _Ty>
+struct remove_all_test<const _Ty> : remove_all_test<_Ty>{};
 int main() {
-    arr<int,5> v;
-    v.set(1);
+    remove_all_test<int&>::type
 }
