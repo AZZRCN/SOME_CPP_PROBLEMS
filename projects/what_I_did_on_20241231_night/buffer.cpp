@@ -2,7 +2,9 @@
 #include <string.h>
 #include <process.h>
 #include <math.h>
+#include "..\..\rewrite\io.cpp"
 /**
+ * 最高宗旨：
  * 1.系统安全高于一切
  * 2.文件安全高于时间
  * 3.内存安全高于浪费
@@ -19,9 +21,9 @@ bool less_05(const double& x){
 bool less_equal_05(const double& x){
     return x<=0.5;
 }
-long long _round(const double& x){
-    return (long long)round(x);
-}
+// long long _round(const double& x){
+//     return (long long)round(x);
+// }
 enum{
     N_NEW_LINE = -2,
     R_NEW_LINE = -3,
@@ -159,19 +161,21 @@ class Buffer{
         font f(path);
         load_font(x,y,f,removed_bg);
     }
-    void draw_line(const int& x1,const int& y1,const int& x2,const int& y2,const char& c){
+    void draw_line(const double& x1,const double& y1,const double& x2,const double& y2,const char& c,const double& x_check_delta/* = 0.1*/){
         if(x1>x2){
-            return (void)draw_line(x2,y2,x1,y1,c);
+            return (void)draw_line(x2,y2,x1,y1,c,x_check_delta);
         }
-        const double X1 = x1;
-        const double Y1 = y1;
-        const double X2 = x2;
-        const double Y2 = y2;
-        const double k = (Y2-Y1)/(X2-X1);
+        // const double k = (y2-y1)/(x2-x1);
+        const double x_delta = x2-x1;
+        const double y_delta = y2-y1;
+        const double k = y_delta/x_delta;
         double ans;
-        for(int i = 0; i <= (x2-x1); i++){
-            ans = k*i;
-            buf[y1+_round(ans)][x1+i]=c;
+        for(double i = 0; i <= (x2-x1); i+=x_check_delta){
+            ans = i*y_delta/x_delta;
+            buf
+            [(int)(round(ans+y1))]
+            [(int)(floor(x1+i))]
+            =c;
         }
     }
     void put_str(int x,int y,int split,char* a_path,char* str){
@@ -191,6 +195,5 @@ char* get_string(const char* str){
 }
 int main(){
     buf.data_set('.');
-    buf.put_str(0,0,5,get_string(".\\FT\\A"),get_string("ABC"));
     buf.out_marked();
 }
