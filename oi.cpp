@@ -108,11 +108,13 @@ for(int i = 1; i <= times; i++){\
     namespace exprs{
         constexpr unsigned long long GB = 0x40000000ULL;//fsutil createNew GB常量
     }
-    namespace chk{
-        inline bool is_digit(char c){
-            return (c>='0')&&(c<='9');
-        }
+    namespace check{
+        inline bool is_digit(char c){return (c>='0')&&(c<='9');}
+        inline bool is_char(char c){return (c>='a'&&c<='z')||(c>='A'&&c<='Z');}
+        inline constexpr bool is_c(const unsigned char& c){return (unsigned)((c&0xDFU)-0x41U)<26U;}
+        inline constexpr bool is_d(const unsigned char& c){return (unsigned)(c^0x30U)<10U;}
     }
+    //输出
     namespace io{
         //PART OF OPERATORS OF COUT
         // template <typename t1,typename t2>
@@ -170,8 +172,8 @@ for(int i = 1; i <= times; i++){\
         char c;
         void in(unsigned long long& x){
             x = 0;
-            while(!oi::chk::is_digit(c = getchar()));
-            while(oi::chk::is_digit(c)){
+            while(!oi::check::is_digit(c = getchar()));
+            while(oi::check::is_digit(c)){
                 x = (x * 10) + (c ^ 0x30);
                 c=getchar();
             }
@@ -202,11 +204,7 @@ for(int i = 1; i <= times; i++){\
         auto digit = [](const char& c)->bool{
             return (c>='0')&&(c<='9');
         };
-        auto in = [
-            #ifndef is_in_oi_namespace
-            &digit
-            #endif
-            ](int& x)->void{
+        auto in = [&/*digit*/](int& x)->void{
             x = 0;
             bool zf = true;
             char c=getchar();
@@ -220,11 +218,7 @@ for(int i = 1; i <= times; i++){\
             }
             if(!zf)x=-x;
         };
-        auto in2=[
-            #ifndef is_in_oi_namespace
-            &digit
-            #endif
-        ](int&x)->void{
+        auto in2=[&/*digit*/](int&x)->void{
             x=0;bool zf=true;char c=getchar();
             (c=='+'||c=='-')?(((c=='-')?(zf=false):(NULL)),c=getchar()):(NULL);
             while(digit(c)&&((x=x*10+(c-'0')),c=getchar()));
@@ -443,9 +437,8 @@ for(int i = 1; i <= times; i++){\
         }
     }
     namespace tools{
-        // using _Ty = int;
         template<typename _Ty>
-        class counter{
+        class counter/*计数器*/{
             public:
             unordered_map<_Ty,size_t> um;
             __forceinline __fastcall void operator+(const _Ty x){add(x);}
@@ -454,151 +447,39 @@ for(int i = 1; i <= times; i++){\
             __forceinline bool empty() const {return um.empty();}
             void merge(const counter<_Ty>&c){for(pair<_Ty,size_t>&i:c.um){add(i.first,i.second);}}
             bool contains(const _Ty x){return um.find(x) != um.end();}
-            __forceinline __fastcall const void add(const _Ty x){
-                typename unordered_map<_Ty,size_t>::iterator it = um.find(x);
-                if(it != um.end()){it->second++;}
-                else{um.insert(make_pair<const _Ty&,size_t>(x,1));}
-            }
-            __forceinline __fastcall const void add(const _Ty x,size_t times){
-                typename unordered_map<_Ty,size_t>::iterator it = um.find(x);
-                if(it != um.end()){it->second += times;}
-                else{um.insert(make_pair<const _Ty&,size_t>(x,times));}
-            }
-            __forceinline __fastcall const void del(const _Ty x){
-                typename unordered_map<_Ty,size_t>::iterator it = um.find(x);
-                if(it != um.end()){
-                    if(it->second > 0){it->second--;}
-                    else{um.erase(it);}
-                }
-            }
-            __forceinline __fastcall const void del(const _Ty x,size_t times){
-                typename unordered_map<_Ty,size_t>::iterator it = um.find(x);
-                if(it != um.end()){
-                    if(it->second > times){it->second -= times;}
-                    else{um.erase(it);}
-                }
-            }
+            __forceinline __fastcall const void add(const _Ty x)             {typename unordered_map<_Ty,size_t>::iterator it = um.find(x);if(it != um.end()){it->second++;}else{um.insert(make_pair<const _Ty&,size_t>(x,1));}}
+            __forceinline __fastcall const void add(const _Ty x,size_t times){typename unordered_map<_Ty,size_t>::iterator it = um.find(x);if(it != um.end()){it->second += times;}else{um.insert(make_pair<const _Ty&,size_t>(x,times));}}
+            __forceinline __fastcall const void del(const _Ty x)             {typename unordered_map<_Ty,size_t>::iterator it = um.find(x);if(it != um.end()){if(it->second > 0){it->second--;}else{um.erase(it);}}}
+            __forceinline __fastcall const void del(const _Ty x,size_t times){typename unordered_map<_Ty,size_t>::iterator it = um.find(x);if(it != um.end()){if(it->second > times){it->second -= times;}else{um.erase(it);}}}
             //count a element
-            __forceinline size_t count(const _Ty&x){
-                typename unordered_map<_Ty,size_t>::iterator it = um.find(x);
-                return ((it != um.end()) ? (it->second) : (0));
-            }
+            __forceinline size_t count(const _Ty&x){typename unordered_map<_Ty,size_t>::iterator it = um.find(x);return ((it != um.end()) ? (it->second) : (0));}
             //count the elements
             __forceinline __fastcall size_t size() const {return um.size();}
             //the number of all elements
-            __forceinline size_t total() const {
-                size_t ret = 0;
-                for(const pair<_Ty,size_t>&i:um){ret += i.second;}
-                return ret;
-            }
-            _Ty most() {
-                _Ty maxn;
-                size_t max_;
-                for(pair<_Ty,size_t> i:um){
-                    if(i.second>max_){
-                        max_ = i.second;
-                        maxn = i.first;
-                    }
-                }
-                return maxn;
-            }
-            vector<_Ty> most_repeat() {
-                vector<_Ty> maxn;
-                size_t max_;
-                for(pair<_Ty,size_t>&i:um){
-                    if(i.second>max_){
-                        maxn.clear();
-                        maxn.push_back(i.first);
-                        max_ = i.second;
-                        continue;
-                    }
-                    if(i.second == max_){maxn.push_back(i.first);}
-                }
-                return maxn;
-            }
-            vector<_Ty> all_key() {
-                vector<_Ty> v;
-                for(pair<const _Ty,size_t>&i:um){v.push_back(i.first);}
-                return v;
-            }
-            void print(){
-                for(pair<_Ty,size_t> i:um){
-                    cout << i.first << " " << i.second << endl;
-                }
-            }
-            friend std::ostream& operator<<(std::ostream& os, const counter& c) {
-                for(const auto& pair : c.um) {
-                    os << pair.first << " " << pair.second << std::endl;
-                }
-                return os;
-            }
-        };
-        struct log_outer{
-            public:
-            FILE* f;
-            ~log_outer(){
-                fclose(f);
-            }
-            log_outer(const char* s){
-                f = fopen(s,"a");
-            }
-            log_outer(FILE* _f){
-                f = _f;
-            }
-            log_outer(void){
-                f = stdout;
-            }
-            void operator<<(const char* msg){
-                DateTime dt = getCurrentDateTime();
-                fprintf(f,"[%04d-%02d-%02d %02d:%02d:%02d:%03d] INFO: %s\n",dt.year,dt.month,dt.day,dt.hour,dt.minute,dt.second,dt.millisecond,msg);
-            }
-            void out(const char* msg,const char* level){
-                DateTime dt = getCurrentDateTime();
-                fprintf(f,"[%04d-%02d-%02d %02d:%02d:%02d:%03d] %s: %s\n",dt.year,dt.month,dt.day,dt.hour,dt.minute,dt.second,dt.millisecond,level,msg);
-            }
+            __forceinline size_t total() const {size_t ret = 0;for(const pair<_Ty,size_t>&i:um){ret += i.second;}return ret;}
+            _Ty most()/*最多元素(随机顺序,只返回一个)*/{_Ty maxn;size_t max_;for(pair<_Ty,size_t> i:um){if(i.second>max_){max_ = i.second;maxn = i.first;}}return maxn;}
+            vector<_Ty> most_repeat()/*最多元素(随机顺序,返回多个)*/{vector<_Ty> maxn;size_t max_;for(pair<_Ty,size_t>&i:um)
+            {if(i.second>max_){maxn.clear();maxn.push_back(i.first);max_ = i.second;continue;}if(i.second == max_){maxn.push_back(i.first);}}return maxn;}
+            vector<_Ty> all_key()/*所有元素,乱序*/{vector<_Ty> v;for(pair<const _Ty,size_t>&i:um){v.push_back(i.first);}return v;}
+            void print(){for(pair<_Ty,size_t> i:um){cout << i.first << " " << i.second << endl;}}
+            friend std::ostream& operator<<(std::ostream& os, const counter& c) {for(const auto& pair : c.um) {os << pair.first << " " << pair.second << std::endl;}return os;}
         };
         namespace clocker{
             #ifdef _GLIBCXX_CHRONO
-            class ms_timer{
-                public:
-                std::chrono::_V2::system_clock::time_point start;
-                std::chrono::_V2::system_clock::time_point end;
-                bool flag = false;//is_or_not clocking
+            class ms_timer{public:
+                std::chrono::_V2::system_clock::time_point start,end;bool flag = false;//is clocking?
                 void operator()(){
-                    if(!flag){
-                        start = std::chrono::high_resolution_clock::now();
-                        flag = true;
-                    }
-                    else{
-                        end = std::chrono::high_resolution_clock::now();
-                        flag = false;
-                    }
+                    if(!flag){start = std::chrono::high_resolution_clock::now();flag = true;}
+                    else{end = std::chrono::high_resolution_clock::now();flag = false;}
                 }
-                int64_t res(){
-                    return std::chrono::duration_cast<chrono::milliseconds>(end - start).count();
-                }
+                int64_t res(){return std::chrono::duration_cast<chrono::milliseconds>(end - start).count();}
             };
-            struct DateTime {
-                int year;
-                int month;
-                int day;
-                int hour;
-                int minute;
-                int second;
-                int millisecond;
-            };
-
+            struct DateTime {int year,month,day,hour,minute,second,millisecond;};
             DateTime getCurrentDateTime() {
-                // 获取当前时间点
-                auto now = std::chrono::system_clock::now();
-                
-                // 转换为系统时间
-                std::time_t now_time_t = std::chrono::system_clock::to_time_t(now);
+                auto now = std::chrono::system_clock::now(); // 获取当前时间点
+                std::time_t now_time_t = std::chrono::system_clock::to_time_t(now);// 转换为系统时间
                 std::tm now_tm = *std::localtime(&now_time_t);
-                
-                // 获取毫秒部分
-                auto milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()) % 1000;
-
+                auto milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()) % 1000;// 获取毫秒部分
                 DateTime currentDateTime;
                 currentDateTime.year = now_tm.tm_year + 1900; // tm_year是从1900年起的偏移
                 currentDateTime.month = now_tm.tm_mon + 1;    // tm_mon是从0开始的
@@ -607,9 +488,12 @@ for(int i = 1; i <= times; i++){\
                 currentDateTime.minute = now_tm.tm_min;
                 currentDateTime.second = now_tm.tm_sec;
                 currentDateTime.millisecond = static_cast<int>(milliseconds.count());
-
                 return currentDateTime;
             }
+            struct log_outer{public:FILE* f;~log_outer(){fclose(f);}log_outer(const char* s){f = fopen(s,"a");}log_outer(FILE* _f){f = _f;}log_outer(void){f = stdout;}
+            void operator<<(const char* msg){DateTime dt = getCurrentDateTime();fprintf(f,"[%04d-%02d-%02d %02d:%02d:%02d:%03d] INFO: %s\n",dt.year,dt.month,dt.day,dt.hour,dt.minute,dt.second,dt.millisecond,msg);}
+            void out(const char* msg,const char* level){DateTime dt = getCurrentDateTime();fprintf(f,"[%04d-%02d-%02d %02d:%02d:%02d:%03d] %s: %s\n",dt.year,dt.month,dt.day,dt.hour,dt.minute,dt.second,dt.millisecond,level,msg);}
+            };
             #endif
         }
     }
@@ -864,72 +748,21 @@ for(int i = 1; i <= times; i++){\
     }
     namespace math{
         namespace roma{
-            string intToRoman(int num) {
-                int values[] = { 1000,900,500,400,100,90,50,40,10,9,5,4,1 };
-                string reps[] = { "M","CM","D","CD","C","XC","L","XL","X","IX","V","IV","I" };
-                string res;
-                for (int i = 0; i < 13; i++) {
-                    while (num >= values[i]) {
-                        num -= values[i];
-                        res += reps[i];
-                    }
-                }
-                return res;
-            }
-            // 查找数值对应的罗马字符
-            inline const char* convertor(int num) {
+            //罗马数字
+            string intToRoman(int num) {int values[] = { 1000,900,500,400,100,90,50,40,10,9,5,4,1 };string reps[] = { "M","CM","D","CD","C","XC","L","XL","X","IX","V","IV","I" };
+                string res;for (int i = 0; i < 13; i++) {while (num >= values[i]) {num -= values[i];res += reps[i];}}return res;}
+            inline const char* convertor(int num)/*查找数值对应的罗马字符*/{
                 switch (num) {
-                case 0: fail:return ""; // 0为特殊情况，需注意
-                case 1: return "I";
-                case 2: return "II";
-                case 3: return "III";
-                case 4: return "IV";
-                case 5: return "V";
-                case 6: return "VI";
-                case 7: return "VII";
-                case 8: return "VIII";
-                case 9: return "IX";
-                case 10: return "X";
-                case 20: return "XX";
-                case 30: return "XXX";
-                case 40: return "XL";
-                case 50: return "L";
-                case 60: return "LX";
-                case 70: return "LXX";
-                case 80: return "LXXX";
-                case 90: return "XC";
-                case 100: return "C";
-                case 200: return "CC";
-                case 300: return "CCC";
-                case 400: return "CD";
-                case 500: return "D";
-                case 600: return "DC";
-                case 700: return "DCC";
-                case 800: return "DCCC";
-                case 900: return "CM";
-                case 1000: return "M";
-                case 2000: return "MM";
-                case 3000: return "MMM";
+                case 0: fail:return ""; /*0为特殊情况，需注意*/
+                case 1:return"I";case 2:return"II";case 3:return"III";case 4:return"IV";case 5:return"V";case 6:return"VI";case 7:return"VII";case 8:return"VIII";case 9:return"IX";
+                case 10:return"X";case 20:return"XX";case 30:return"XXX";case 40:return"XL";case 50:return"L";case 60:return"LX";case 70:return"LXX";case 80:return"LXXX";case 90:return"XC";
+                case 100:return"C";case 200:return"CC";case 300:return"CCC";case 400:return"CD";case 500:return"D";case 600:return"DC";case 700:return"DCC";case 800:return"DCCC";case 900:return"CM";
+                case 1000:return"M";case 2000:return"MM";case 3000:return"MMM";
                 default: goto fail;
                 }
             }
-            string intToRoman2(int num) {
-                return (string)convertor(num / 1000 * 1000) // 计算千位罗马字符
-                    + convertor(num / 100 % 10 * 100) // 计算百位罗马字符
-                    + convertor(num / 10 % 10 * 10) // 计算十位罗马字符
-                    + convertor(num % 10); // 计算个位罗马字符
-            }
-            int romatoint(char c){
-                //DEBUG
-                if(c=='T')return 0;
-                if(c=='I')return 1;
-                if(c=='V')return 5;
-                if(c=='X')return 10;
-                if(c=='L')return 50;
-                if(c=='C')return 100;
-                if(c=='D')return 500;
-                if(c=='M')return 1000;
-            }
+            string intToRoman2(int num) {return (string)convertor(num / 1000 * 1000) /*千位*/ + convertor(num / 100 % 10 * 100) /*百位*/ + convertor(num / 10 % 10 * 10) /*十位*/ + convertor(num % 10); /*个位*/}
+            int romatoint(char c){/*DEBUG*/if(c=='T')return 0;if(c=='I')return 1;if(c=='V')return 5;if(c=='X')return 10;if(c=='L')return 50;if(c=='C')return 100;if(c=='D')return 500;if(c=='M')return 1000;}
             int romanToInt(string s) {
                 s.push_back('T');
                 int last = 0;
