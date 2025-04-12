@@ -1,3 +1,4 @@
+#pragma GCC diagnostic ignored "-Wmultichar"
 #include <bits/stdc++.h>
 using namespace std;
 #define int long long
@@ -32,17 +33,18 @@ void out(uint64_t x){
     putwchar((x>>48)&0xffff);
 }
 signed main(){
-    calc();
-    _wfreopen(L"P1748_pre_2.cpp",L"wb+",stdout);
-    for(int i = 0; i <= 10001; i++){
-        // putwchar(L'\"');
-        // out(ans[i]);
-        // putwchar(L'\"');
-        // putwchar(L',');
-        // if(i%100==0){
-        //     putwchar(L'\n');
-        //     '\n';
-        // }
-        out(ans[i]);
-    }
+    // calc();
+    // _wfreopen(L"P1748_pre_2.cpp",L"wb+",stdout);
+    // for(int i = 0; i <= 10001; i++){
+    //     // putwchar(L'\"');
+    //     // out(ans[i]);
+    //     // putwchar(L'\"');
+    //     // putwchar(L',');
+    //     // if(i%100==0){
+    //     //     putwchar(L'\n');
+    //     //     '\n';
+    //     // }
+    //     out(ans[i]);
+    // }
+    cout << (unsigned int)('ABC');
 }

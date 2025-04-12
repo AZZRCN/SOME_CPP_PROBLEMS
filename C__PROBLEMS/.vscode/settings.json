@@ -4,7 +4,8 @@
         "tuple": "cpp",
         "variant": "cpp",
         "compare": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "*.tcc": "cpp"
     },
     "workbench.localHistory.enabled": false
 }
