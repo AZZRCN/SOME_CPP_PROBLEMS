@@ -1,0 +1,12 @@
+ffmpeg -start_number 1 -framerate 30 -i "C:\Users\86156\Downloads\北京宣言_妇女_联合国\PFA_E_Final_WEB.pdf\PFA_E_Final_WEB-%03d.png" -vf "scale=1650:2550:force_original_aspect_ratio=decrease" -frames:v 277 -vcodec libx264  -an output.mp4
+ffmpeg -start_number 1 -framerate 30 -i "C:\Users\86156\Downloads\北京宣言_妇女_联合国\PFA_E_Final_WEB.pdf\PFA_E_Final_WEB-%03d.png" -vf "scale=1650:2550:force_original_aspect_ratio=decrease,rotate=10*PI/180:ow=2000:oh=1500,colorchannelmixer=rr=1.2:gg=0.9:bb=0.8" -frames:v 277 -vcodec libx264 -an output.mp4
+ffmpeg -start_number 1 -framerate 30 -i "C:\Users\86156\Downloads\北京宣言_妇女_联合国\PFA_E_Final_WEB.pdf\PFA_E_Final_WEB-%03d.png" -vf "scale=1650:2550,tmix=frames=3:weights='0.2 0.5 1':normalize=0,format=yuv420p" -frames:v 277 -vcodec libx264 -an output.mp4
+ffmpeg -start_number 1 -framerate 30 -i "C:\Users\86156\Downloads\北京宣言_妇女_联合国\PFA_E_Final_WEB.pdf\PFA_E_Final_WEB-%03d.png" -vf "scale=1650:2550,split=3[org][c1][c2];[c1]lagfun=decay=0.7[lag1];[c2]lagfun=decay=0.4[lag2];[org][lag1]blend=all_mode='addition':all_opacity=0.6[tmp];[tmp][lag2]blend=all_mode='screen':all_opacity=0.3,format=yuv420p" -frames:v 277 -vcodec libx264 -an output.mp4
+
+ffmpeg -i "D:\下载\Futanari 挤奶机 xHamster.mp4" -vsync 0 -map 0:v:0 -start_number 0 -frame_pts true -f image2 "D:\H\Futanari 挤奶机 xHamster.mp4\frame_%05d.jpg"
+ffmpeg -i "D:\下载\Feeding Sissy Cats Full of Cum - Pornhub Gay.mp4" -vsync 0 -map 0:v:0 -start_number 0 -frame_pts true -f image2 "D:\H\Feeding Sissy Cats Full of Cum - Pornhub Gay.mp4\frame_%05d.jpg"
+ffmpeg -i input.mp4 -vsync 0 -map 0:v:0 -start_number 0 -frame_pts true -f image2 "path/frame_%05d.jpg"
+ffmpeg -i input.mp4 -vf "fps=10" -qscale:v 2 -vsync vfr -start_number 0 "path/frame_%05d.jpg"
+ffmpeg -i "D:\下载\Feeding Sissy Cats Full of Cum - Pornhub Gay.mp4" -vf "fps=10" -qscale:v 2 -vsync vfr -start_number 0 "D:\H\Feeding Sissy Cats Full of Cum - Pornhub Gay.mp4\frame_%05d.jpg"
+mkdir "D:\H\Erotic Video of Japanese Sissy Ejaculating three Times女装 男の娘 女性向.mp4"
+ffmpeg -i "D:\下载\Erotic Video of Japanese Sissy Ejaculating three Times女装 男の娘 女性向.mp4" -vf "fps=10" -qscale:v 2 -vsync vfr -start_number 0 "D:\H\Erotic Video of Japanese Sissy Ejaculating three Times女装 男の娘 女性向.mp4\frame_%05d.jpg"

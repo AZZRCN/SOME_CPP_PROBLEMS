@@ -18,7 +18,7 @@ enum {
 };
 
 class un_g {
-private:
+private: 
     // 点所连接的边
     unordered_map<int, unordered_set<int>> datas; // 每个点的邻接表（存储出边）
     // 边的状态（使用 unordered_set 存储边的存在性）

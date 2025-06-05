@@ -32,12 +32,39 @@ public:
     // 可选：带缓冲区长度检查的版本
     in& get(char* str, size_t max_len) {
         std::scanf("%*s"); // 清除缓冲区
-        std::scanf("%" + std::to_string(max_len-1) + "s", str);
+        std::scanf(("%" + std::to_string(max_len-1) + "s").c_str(), str);
         str[max_len-1] = '\0';
         return *this;
     }
 };
-
+class inV2 {
+public:
+    template<typename T>inV2& operator>>(T& value) {
+        if constexpr (std::is_integral_v<T>) {
+            if constexpr (std::is_signed_v<T>) {std::scanf("%lld", static_cast<long long*>(static_cast<void*>(&value)));}
+            else{std::scanf("%llu", static_cast<unsigned long long*>(static_cast<void*>(&value)));}
+        } else if constexpr (std::is_floating_point_v<T>) {std::scanf("%lf", static_cast<double*>(static_cast<void*>(&value)));
+        } else if constexpr (std::is_same_v<T, std::string>) {std::cin >> value;}
+        return *this;
+    }
+    inV2& operator>>(char* str) {std::scanf("%s", str);return *this;}
+};
+class inV2_simple {
+public:
+    template<typename T>inV2_simple& operator>>(T& value) {
+        if constexpr (std::is_integral_v<T>) {
+            if constexpr (std::is_signed_v<T>)
+            {std::scanf("%lld", static_cast<long long*>(static_cast<void*>(&value)));}
+            else{std::scanf("%llu", static_cast<unsigned long long*>(static_cast<void*>(&value)));}
+        }
+        return *this;
+    }
+};
+class inV2_simple_simple {public:
+    template<typename T>inV2_simple_simple& operator>>(T& value){return *this;}
+    inV2_simple_simple& operator>>(int& value){std::scanf("%d", &value);return *this;}
+    inV2_simple_simple& operator>>(long long& value){std::scanf("%lld", &value);return *this;}
+};
 // 用法示例
 int main() {
     in input;

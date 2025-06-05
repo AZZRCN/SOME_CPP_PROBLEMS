@@ -1,1 +1,0 @@
-g++ -O3 -march=native -flto -fomit-frame-pointer -funroll-loops -ftree-vectorize -ffast-math -D_FORTIFY_SOURCE=2 -Wl,--strip-all projects\clocker_read_argv_3.c

@@ -1,3 +1,9 @@
+#include <bits/stdc++.h>
+using namespace std;
+#ifndef __fastcall
+#define __fastcall __attribute__((__fastcall__))
+#define __forceinline inline __attribute__((__always_inline__))
+#endif
 struct TreeNode {
     int val;
     TreeNode *left;

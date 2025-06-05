@@ -438,14 +438,14 @@ for(int i = 1; i <= times; i++){\
     }
     namespace tools{
         template<typename _Ty>
-        class counter/*计数器*/{
+        class counterV1/*计数器*/{
             public:
             unordered_map<_Ty,size_t> um;
             __forceinline __fastcall void operator+(const _Ty x){add(x);}
             __forceinline __fastcall void operator-(const _Ty x){del(x);}
             __forceinline void clear() const {um.clear();}
             __forceinline bool empty() const {return um.empty();}
-            void merge(const counter<_Ty>&c){for(pair<_Ty,size_t>&i:c.um){add(i.first,i.second);}}
+            void merge(const counterV1<_Ty>&c){for(pair<_Ty,size_t>&i:c.um){add(i.first,i.second);}}
             bool contains(const _Ty x){return um.find(x) != um.end();}
             __forceinline __fastcall const void add(const _Ty x)             {typename unordered_map<_Ty,size_t>::iterator it = um.find(x);if(it != um.end()){it->second++;}else{um.insert(make_pair<const _Ty&,size_t>(x,1));}}
             __forceinline __fastcall const void add(const _Ty x,size_t times){typename unordered_map<_Ty,size_t>::iterator it = um.find(x);if(it != um.end()){it->second += times;}else{um.insert(make_pair<const _Ty&,size_t>(x,times));}}

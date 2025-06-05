@@ -1,0 +1,13 @@
+#define cin ___cin
+#include <bits/stdc++.h>
+#undef cin
+using namespace std;
+class in_int {int t;bool sign;public:template<typename T>in_int& operator>>(T& value) {
+if constexpr (std::is_integral_v<T>) {value = 0,sign = false;
+while(((unsigned)((t=getchar())-'0')>0x9)&&(t!='+')&&(t!='-'));
+if constexpr (std::is_signed_v<T>){sign = (t=='-')?(true):(value=((t=='+')?(0):(t^'0')),false);}
+while((unsigned)((t=getchar())^0x30)<0xA){value = value * 10 + (t^0x30);}sign?(value = -value):(0);}
+return *this;}};
+in_int cin;int main(){
+    $0
+}
