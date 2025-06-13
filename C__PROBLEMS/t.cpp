@@ -1,10 +1,23 @@
 #include <bits/stdc++.h>
+#include <windows.h>
 using namespace std;
-int abc = 1;
-int& f(){
-    return abc;
-}
+class background{
+    public:
+    double x;
+    double y;
+};
+class obj{
+    public:
+    int x;
+    int y;
+    pair<double,double> G;
+    background& father;
+    void calc_x(){
+
+    }
+    void update(double t){
+
+    }
+};
 int main(){
-    f()=2;
-    cout << abc;
 }

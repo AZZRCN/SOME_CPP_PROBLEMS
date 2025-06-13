@@ -121,13 +121,52 @@ fixed_struct_qwen<Ts...> make_fixed_struct(Ts&&... args) {
 //V2
 template<typename...Ts>class fs{tuple<Ts...>d;public:
     fs(Ts...values):d(values...){};fs()=default;
-    template<size_t I>decltype(auto)get(){return get<I>(d);};
-    template<size_t I>decltype(auto)get()const{return get<I>(d);};
+    template<size_t I>decltype(auto)get(){return std::get<I>(d);};
+    template<size_t I>decltype(auto)get()const{return std::get<I>(d);};
 };
 template<typename...Ts>fs<Ts...>make_fs(Ts&&...args){return{forward<Ts>(args)...};};
 
 
 //fixed_struct_最精简版
 template<typename...Ts>class fs{tuple<Ts...>d;public:fs(Ts...values):d(values...){};fs()=default;
-template<size_t I>decltype(auto)get(){return get<I>(d);};};
+template<size_t I>decltype(auto)get(){return std::get<I>(d);};};
 template<typename...Ts>fs<Ts...>make_fs(Ts&&...args){return{forward<Ts>(args)...};};
+
+
+
+template<typename... Ts>
+class fs {std::tuple<Ts...>d;public:
+    fs(Ts...values):d(values...){};fs()=default;
+    template<size_t I>decltype(auto)g(){return std::get<I>(d);}
+};
+
+// 辅助函数
+template<typename... Ts>
+auto make_fs(Ts&&... args) {
+    return fs<std::decay_t<Ts>...>(std::forward<std::decay_t<Ts>>(args)...);
+};
+template<typename... Ts>
+auto mf(Ts&&... args) {
+    return fs<decay_t<Ts>...>(forward<decay_t<Ts>>(args)...);
+}
+
+
+
+
+template<typename...T>class F{tuple<T...>d;public:F(T...v):d(v...){};template<auto I>
+auto g(){return get<I>(d);}};template<typename...T>auto mf(T...v){return F<T...>(v...);}
+
+template<typename...T>
+class F{
+    tuple<T...>d;
+public:
+    F(T...v):d(v...){};
+    template<auto I>
+    auto g(){
+        return get<I>(d);
+    }
+};
+template<typename...T>
+auto mf(T...v){
+    return F<T...>(v...);
+}

@@ -16,7 +16,7 @@ public:
     int dis(int a,int b){return d[a][b]==I?-1:d[a][b];}
 };
 unordered_map<int,vi> t2p;
-unordered_map<int,int> p2t;
+unordered_map<int,vector<pair<int,int>>> p2e;
 int main(){
     int N,M,Q;
     cin >> N >> M;
@@ -24,17 +24,20 @@ int main(){
     for(int i = 0; i < N; i++){
         cin >> a;
         t2p[a].push_back(i);
-        p2t.insert(make_pair(i,a));
     }
-    F5 f(N);
     for(int i = 1; i <= M ; i++){
         cin >> a >> b >> w;
-        f.add(a,b,w);
-        f.add(b,a,w);
+        p2e[a].push_back(make_pair(b,w));
+        p2e[b].push_back(make_pair(a,w));
     }
+    F5 f(N);
     cin >> Q;
     int current_time = 0;
     for(auto k: t2p[0]){
+        for(auto kk : p2e[k]){
+            f.add(k,kk.first,kk.second);
+            f.add(kk.first,k,kk.second);
+        }
         f.build(k);
     }
     current_time = 0;
@@ -42,12 +45,12 @@ int main(){
         cin >> a >> b >> w;
         for(; current_time <= w; current_time++){
             for(auto k: t2p[current_time]){
+                for(auto kk : p2e[k]){
+                    f.add(k,kk.first,kk.second);
+                    f.add(kk.first,k,kk.second);
+                }
                 f.build(k);
             }
-        }
-        if(p2t[a]>w||p2t[b]>w){
-            puts("-1");
-            continue;
         }
         cout << f.dis(a,b) << endl;
     }

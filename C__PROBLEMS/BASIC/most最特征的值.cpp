@@ -18,6 +18,10 @@ template<typename t,typename ...Args>
 t max(const t& first,const t& second,Args... args){
     return max(max(first,second),args...);
 }
+
+
+template<typename t,typename ...Args>t Mmax(const t& first,const t& second,Args... args){return max(max(first,second),args...);}
+template<typename t,typename ...Args>t Mmin(const t& first,const t& second,Args... args){return min(min(first,second),args...);}
 // template<typename t,typename >
 // t inf()
 #include <iostream>
